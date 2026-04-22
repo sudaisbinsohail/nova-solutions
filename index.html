@@ -1,1275 +1,229 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nova Solution — Digital Innovation Studio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<title>Nova Solution</title>
+
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #060810;
+  color: white;
+  font-family: sans-serif;
+  overflow-x: hidden;
+}
 
-  :root {
-    --bg: #060810;
-    --surface: #0d1120;
-    --card: #111827;
-    --border: rgba(255,255,255,0.07);
-    --accent: #00d4ff;
-    --accent2: #7c3aed;
-    --accent3: #f59e0b;
-    --text: #f0f4ff;
-    --muted: #8892a4;
-    --font-display: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-  }
+/* SECTION */
+.services {
+  padding: 100px 20px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-weight: 300;
-    overflow-x: hidden;
-    cursor: none;
-  }
+/* STACK */
+.card-stack-wrapper {
+  position: relative;
+  width: 320px;
+  height: 450px;
+}
 
-  .cursor {
-    position: fixed;
-    width: 10px; height: 10px;
-    background: var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s;
-    mix-blend-mode: screen;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1.5px solid rgba(0,212,255,0.4);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.18s ease, width 0.2s, height 0.2s;
-    transform: translate(-50%,-50%);
-  }
-  .cursor-ring.hovered { width: 56px; height: 56px; border-color: var(--accent); }
+/* CARD */
+.stack-card {
+  position: absolute;
+  width: 100%;
+  height: 420px;
+  border-radius: 20px;
+  padding: 20px;
+  background: #111827;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
-  }
+/* POSITIONS */
+.stack-card[data-index="0"] { transform: translateY(0) scale(1); z-index: 5; }
+.stack-card[data-index="1"] { transform: translateY(20px) scale(0.95); z-index: 4; }
+.stack-card[data-index="2"] { transform: translateY(40px) scale(0.9); z-index: 3; }
+.stack-card[data-index="3"] { transform: translateY(60px) scale(0.85); z-index: 2; }
+.stack-card[data-index="4"] { transform: translateY(80px) scale(0.8); z-index: 1; opacity: 0.6; }
+.stack-card[data-index="5"] { transform: translateY(100px) scale(0.75); opacity: 0.3; }
 
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 24px 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    backdrop-filter: blur(20px);
-    background: rgba(6,8,16,0.7);
-    border-bottom: 1px solid var(--border);
-  }
-  .logo {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 22px;
-    letter-spacing: -0.5px;
-    color: var(--text);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .logo-mark {
-    width: 32px; height: 32px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; font-weight: 800; color: white;
-  }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--text); }
-  .nav-cta {
-    background: transparent;
-    border: 1px solid rgba(0,212,255,0.4);
-    color: var(--accent);
-    padding: 10px 24px;
-    border-radius: 6px;
-    font-family: var(--font-body);
-    font-size: 14px; font-weight: 500;
-    cursor: none;
-    transition: background 0.2s, border-color 0.2s;
-  }
-  .nav-cta:hover { background: rgba(0,212,255,0.08); border-color: var(--accent); }
+/* CONTENT */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+}
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-    padding: 120px 60px 80px;
-  }
-  .hero::after {
-    content: '';
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-  }
-  .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
-  .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,212,255,0.12) 0%, transparent 70%); top: -100px; left: -100px; animation: drift1 12s ease-in-out infinite alternate; }
-  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%); bottom: -50px; right: -50px; animation: drift2 15s ease-in-out infinite alternate; }
-  .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%); top: 50%; right: 20%; animation: drift1 18s ease-in-out infinite alternate-reverse; }
-  @keyframes drift1 { from { transform: translate(0,0); } to { transform: translate(40px, 30px); } }
-  @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-30px, 20px); } }
+.card-body h3 {
+  margin: 10px 0;
+}
 
-  .hero-inner { position: relative; z-index: 2; max-width: 900px; text-align: center; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 100px; padding: 8px 18px;
-    font-size: 12px; font-weight: 500; color: var(--accent);
-    letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 32px;
-    animation: fadeUp 0.8s ease both;
-  }
-  .badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.card-features {
+  font-size: 13px;
+  color: #aaa;
+  padding-left: 16px;
+}
 
-  .hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(48px, 7vw, 88px);
-    font-weight: 800; line-height: 1.0;
-    letter-spacing: -2px; margin-bottom: 24px;
-    animation: fadeUp 0.8s 0.15s ease both;
-  }
-  .hero h1 .line-1 { display: block; color: var(--text); }
-  .hero h1 .line-2 {
-    display: block;
-    background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 60%, var(--accent3) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
-  .hero-sub { font-size: 18px; font-weight: 300; color: var(--muted); max-width: 560px; margin: 0 auto 44px; line-height: 1.7; animation: fadeUp 0.8s 0.3s ease both; }
-  .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; animation: fadeUp 0.8s 0.45s ease both; }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent) 0%, #0099bb 100%);
-    color: #000; font-family: var(--font-body); font-weight: 600; font-size: 15px;
-    padding: 14px 32px; border: none; border-radius: 8px; cursor: none;
-    transition: opacity 0.2s, transform 0.2s; text-decoration: none; display: inline-block;
-  }
-  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
-  .btn-ghost {
-    background: transparent; color: var(--text); font-family: var(--font-body);
-    font-weight: 400; font-size: 15px; padding: 14px 32px;
-    border: 1px solid var(--border); border-radius: 8px; cursor: none;
-    transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    text-decoration: none; display: inline-block;
-  }
-  .btn-ghost:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); transform: translateY(-2px); }
+.card-features li {
+  margin-bottom: 6px;
+}
 
-  .hero-stats {
-    display: flex; gap: 48px; justify-content: center;
-    margin-top: 64px; padding-top: 48px;
-    border-top: 1px solid var(--border);
-    animation: fadeUp 0.8s 0.6s ease both;
-  }
-  .stat { text-align: center; }
-  .stat-num { font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--text); letter-spacing: -1px; line-height: 1; }
-  .stat-num span { color: var(--accent); }
-  .stat-label { font-size: 13px; color: var(--muted); margin-top: 6px; }
-
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* MARQUEE */
-  .marquee-section { padding: 28px 0; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
-  .marquee-track { display: flex; gap: 64px; animation: marquee 20s linear infinite; width: max-content; }
-  .marquee-item { font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 16px; }
-  .marquee-item::after { content: '◆'; color: var(--accent); font-size: 8px; }
-  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-  /* ===================== */
-  /* SERVICES — STACK DECK */
-  /* ===================== */
-  .services {
-    background: var(--bg);
-    padding: 100px 60px;
-    position: relative;
-    overflow: hidden;
-  }
-  .services-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: end;
-    margin-bottom: 80px;
-  }
-  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
-  .section-title { font-family: var(--font-display); font-size: clamp(32px, 4vw, 52px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 20px; }
-  .section-desc { font-size: 17px; color: var(--muted); font-weight: 300; line-height: 1.7; max-width: 500px; }
-
-  /* Stack container */
-  .stack-scene {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: start;
-  }
-
-  /* Left: stacked cards */
-  .card-stack-wrapper {
-    position: relative;
-    height: 480px;
-    perspective: 1200px;
-  }
-
-  .stack-card {
-    position: absolute;
-    left: 0; right: 0;
-    height: 340px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    padding: 36px;
-    cursor: none;
-    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
-                opacity 0.4s ease,
-                box-shadow 0.4s ease;
-    user-select: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
-  }
-
-  .stack-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.04), transparent);
-    pointer-events: none;
-  }
-
-  .stack-card[data-index="0"] {
-    background: linear-gradient(145deg, #131c2f 0%, #0f1620 100%);
-    transform: translateY(0) scale(1) rotateX(0deg);
-    z-index: 6; box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.15);
-  }
-  .stack-card[data-index="1"] {
-    background: linear-gradient(145deg, #161428 0%, #120f20 100%);
-    transform: translateY(28px) scale(0.96) rotateX(1deg);
-    z-index: 5; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  }
-  .stack-card[data-index="2"] {
-    background: linear-gradient(145deg, #191320 0%, #150f1a 100%);
-    transform: translateY(52px) scale(0.92) rotateX(2deg);
-    z-index: 4; box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-  }
-  .stack-card[data-index="3"] {
-    background: linear-gradient(145deg, #1a1218 0%, #150e14 100%);
-    transform: translateY(72px) scale(0.88) rotateX(3deg);
-    z-index: 3; box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-  }
-  .stack-card[data-index="4"] {
-    background: linear-gradient(145deg, #1a1116 0%, #150d12 100%);
-    transform: translateY(88px) scale(0.84) rotateX(4deg);
-    z-index: 2; opacity: 0.6;
-  }
-  .stack-card[data-index="5"] {
-    background: #181014;
-    transform: translateY(100px) scale(0.80) rotateX(5deg);
-    z-index: 1; opacity: 0.3;
-  }
-
-  /* Swiping out animation */
-  .stack-card.swipe-out {
-    transform: translateX(110%) translateY(-40px) rotate(12deg) !important;
-    opacity: 0 !important;
-    transition: transform 0.5s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.4s ease !important;
-    z-index: 10 !important;
-  }
-
-  /* Card inner layout */
-  .card-top { display: flex; align-items: flex-start; justify-content: space-between; }
-  .card-icon-wrap {
-    width: 56px; height: 56px; border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px;
-    flex-shrink: 0;
-    transition: transform 0.3s;
-  }
-  .stack-card:hover .card-icon-wrap { transform: scale(1.08) rotate(-4deg); }
-
-  .card-num {
-    font-family: var(--font-display);
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 2px; color: var(--muted);
-    opacity: 0.5;
-  }
-
-  .card-body { flex: 1; padding: 24px 0 0; }
-  .card-body h3 {
-    font-family: var(--font-display);
-    font-size: 24px; font-weight: 800;
-    letter-spacing: -0.5px; margin-bottom: 10px;
-  }
-  .card-body p { font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 300; }
-
-  .card-footer { display: flex; align-items: center; justify-content: space-between; }
-  .card-tag {
-    display: inline-flex; gap: 6px;
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.8px; text-transform: uppercase;
-    padding: 5px 12px; border-radius: 100px;
-  }
-  .card-action {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.12);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--muted); font-size: 16px;
-    transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    cursor: none;
-  }
-  .stack-card:hover .card-action {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(0,212,255,0.08);
-    transform: rotate(45deg);
-  }
-
-  /* Deck nav */
-  .deck-nav {
-    display: flex; align-items: center; gap: 12px; margin-top: 20px;
-  }
-  .deck-dots {
-    display: flex; gap: 6px; flex: 1;
-  }
-  .deck-dot {
-    height: 3px; border-radius: 2px;
-    background: var(--border);
-    transition: background 0.3s, width 0.3s;
-    flex: 1;
-  }
-  .deck-dot.active { background: var(--accent); }
-  .deck-btn {
-    background: var(--card); border: 1px solid var(--border);
-    color: var(--muted); width: 36px; height: 36px;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    cursor: none; font-size: 14px;
-    transition: border-color 0.2s, color 0.2s, background 0.2s;
-  }
-  .deck-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.06); }
-  .deck-counter {
-    font-family: var(--font-display);
-    font-size: 13px; font-weight: 700; color: var(--muted);
-    min-width: 40px; text-align: center;
-  }
-
-  /* Right: service detail panel */
-  .service-detail {
-    position: sticky;
-    top: 120px;
-  }
-
-  .detail-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .detail-header {
-    padding: 36px 36px 28px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .detail-header-bg {
-    position: absolute; inset: 0;
-    opacity: 0.06;
-    transition: opacity 0.4s;
-  }
-  .detail-icon {
-    font-size: 40px; margin-bottom: 16px;
-    transition: transform 0.4s ease;
-    display: block;
-  }
-  .detail-panel:hover .detail-icon { transform: scale(1.1); }
-  .detail-title {
-    font-family: var(--font-display);
-    font-size: 28px; font-weight: 800; letter-spacing: -0.8px;
-    margin-bottom: 8px;
-  }
-  .detail-tagline { font-size: 14px; color: var(--muted); font-weight: 300; line-height: 1.6; }
-
-  .detail-body { padding: 32px 36px; }
-
-  /* MOBILE SCREEN MOCKUP */
-  .mobile-mockup-container {
-    display: none;
-    justify-content: center;
-    margin: 0 0 28px;
-  }
-  .mobile-mockup-container.visible { display: flex; }
-
-  .mobile-frame {
-    width: 200px;
-    background: #0a0e1a;
-    border-radius: 32px;
-    border: 2px solid rgba(255,255,255,0.12);
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
-    overflow: hidden;
-    position: relative;
-    padding-bottom: 12px;
-  }
-  .mobile-notch {
-    width: 80px; height: 24px;
-    background: #060810;
-    border-radius: 0 0 16px 16px;
-    margin: 0 auto 12px;
-    display: flex; align-items: center; justify-content: center;
-    gap: 6px;
-  }
-  .notch-cam { width: 8px; height: 8px; background: #1a1f30; border-radius: 50%; }
-  .notch-speaker { width: 28px; height: 3px; background: #1a1f30; border-radius: 2px; }
-  .mobile-screen { padding: 0 10px; }
-  .mobile-status-bar { display: flex; justify-content: space-between; padding: 0 4px 8px; font-size: 9px; color: var(--muted); font-weight: 500; }
-  .mobile-app-header { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; padding: 12px; margin-bottom: 8px; }
-  .mobile-app-title { font-family: var(--font-display); font-size: 11px; font-weight: 800; color: white; margin-bottom: 2px; }
-  .mobile-app-sub { font-size: 8px; color: rgba(255,255,255,0.6); }
-  .mobile-cards { display: flex; flex-direction: column; gap: 5px; }
-  .mobile-card { background: var(--card); border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); }
-  .mobile-card-icon { font-size: 14px; flex-shrink: 0; }
-  .mobile-card-text { flex: 1; }
-  .mobile-card-label { font-size: 8px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-  .mobile-card-sub { font-size: 7px; color: var(--muted); }
-  .mobile-card-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-  .mobile-nav { display: flex; justify-content: space-around; padding: 10px 4px 0; border-top: 1px solid var(--border); margin: 8px 0 0; }
-  .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 7px; color: var(--muted); }
-  .mobile-nav-item.active { color: var(--accent); }
-  .mobile-nav-icon { font-size: 12px; }
-
-  /* Web browser mockup */
-  .browser-mockup-container {
-    display: none;
-    justify-content: center;
-    margin: 0 0 28px;
-  }
-  .browser-mockup-container.visible { display: flex; }
-  .browser-frame {
-    width: 100%;
-    background: #0a0e1a;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  }
-  .browser-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 14px;
-    background: #0d1220;
-    border-bottom: 1px solid var(--border);
-  }
-  .browser-dots { display: flex; gap: 5px; }
-  .browser-dot { width: 9px; height: 9px; border-radius: 50%; }
-  .browser-url {
-    flex: 1; background: rgba(255,255,255,0.04);
-    border-radius: 4px; padding: 4px 10px;
-    font-size: 9px; color: var(--muted); text-align: center;
-  }
-  .browser-content { padding: 14px; }
-  .browser-hero { background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(124,58,237,0.1)); border-radius: 8px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
-  .browser-hero-text h4 { font-family: var(--font-display); font-size: 10px; font-weight: 800; margin-bottom: 3px; }
-  .browser-hero-text p { font-size: 7px; color: var(--muted); }
-  .browser-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-  .browser-card { background: var(--card); border-radius: 6px; padding: 8px; border: 1px solid var(--border); }
-  .browser-card-icon { font-size: 12px; margin-bottom: 4px; }
-  .browser-card-label { font-size: 7px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-  .browser-card-sub { font-size: 6px; color: var(--muted); }
-
-  /* AI mockup */
-  .ai-mockup-container { display: none; flex-direction: column; gap: 10px; margin: 0 0 28px; }
-  .ai-mockup-container.visible { display: flex; }
-  .ai-chat { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .ai-chat-header { padding: 12px 16px; background: #0d1220; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-  .ai-chat-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent2), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 12px; }
-  .ai-chat-name { font-size: 12px; font-weight: 600; }
-  .ai-chat-status { font-size: 10px; color: #34d399; display: flex; align-items: center; gap: 4px; }
-  .ai-chat-status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #34d399; }
-  .ai-messages { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-  .ai-msg { max-width: 80%; }
-  .ai-msg.user { align-self: flex-end; }
-  .ai-bubble { padding: 8px 12px; border-radius: 10px; font-size: 11px; line-height: 1.5; }
-  .ai-msg.bot .ai-bubble { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.12); color: var(--text); border-radius: 4px 10px 10px 10px; }
-  .ai-msg.user .ai-bubble { background: linear-gradient(135deg, var(--accent2), #5b21b6); color: white; border-radius: 10px 4px 10px 10px; }
-  .ai-typing { display: flex; gap: 4px; padding: 10px 12px; background: rgba(0,212,255,0.05); border-radius: 4px 10px 10px 10px; width: fit-content; }
-  .ai-typing span { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: typing-dot 1.2s ease infinite; }
-  .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
-  .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes typing-dot { 0%,60%,100%{transform:translateY(0);opacity:0.4;} 30%{transform:translateY(-4px);opacity:1;} }
-
-  /* Features list */
-  .detail-features { display: flex; flex-direction: column; gap: 14px; }
-  .detail-feature {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 14px 16px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .detail-feature:hover { border-color: rgba(0,212,255,0.15); background: rgba(0,212,255,0.03); }
-  .feature-check { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; margin-top: 1px; }
-  .feature-text { flex: 1; }
-  .feature-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
-  .feature-sub { font-size: 12px; color: var(--muted); font-weight: 300; }
-
-  .detail-cta {
-    margin-top: 24px;
-    display: flex; gap: 10px;
-  }
-  .detail-cta .btn-primary { flex: 1; text-align: center; font-size: 14px; padding: 12px 20px; }
-  .detail-cta .btn-ghost { font-size: 14px; padding: 12px 20px; }
-
-  /* Transition for detail panel content */
-  .detail-content {
-    opacity: 1;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-  .detail-content.fade-out {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  /* ===================== */
-  /* REST OF SECTIONS */
-  /* ===================== */
-  section { padding: 100px 60px; }
-
-  .process { background: var(--surface); }
-  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 64px; }
-  .process-step { position: relative; }
-  .process-step:not(:last-child)::after {
-    content: ''; position: absolute;
-    top: 20px; left: calc(100% + 16px);
-    width: calc(100% - 56px); height: 1px;
-    background: linear-gradient(90deg, var(--accent), transparent); opacity: 0.3;
-  }
-  .step-num { font-family: var(--font-display); font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px; }
-  .step-icon { width: 40px; height: 40px; background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 16px; }
-  .process-step h4 { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-  .process-step p { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 300; }
-
-  .tech { background: var(--bg); }
-  .tech-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: center; }
-  .tech-pills { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 48px; }
-  .tech-pill { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 10px 18px; font-size: 13px; font-weight: 500; color: var(--text); transition: border-color 0.2s, background 0.2s, transform 0.2s; cursor: default; }
-  .tech-pill:hover { border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.05); transform: translateY(-2px); }
-  .tech-pill-icon { font-size: 16px; }
-
-  .why { background: var(--surface); }
-  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 64px; }
-  .why-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; transition: border-color 0.3s, transform 0.3s; }
-  .why-card:hover { border-color: rgba(0,212,255,0.2); transform: translateY(-4px); }
-  .why-card .icon { font-size: 28px; margin-bottom: 16px; }
-  .why-card h4 { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-  .why-card p { font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 300; }
-
-  .cta-section { background: var(--bg); padding: 100px 60px; }
-  .cta-box {
-    background: linear-gradient(135deg, rgba(0,212,255,0.06) 0%, rgba(124,58,237,0.06) 100%);
-    border: 1px solid rgba(0,212,255,0.15); border-radius: 24px;
-    padding: 80px 60px; text-align: center; max-width: 800px; margin: 0 auto;
-    position: relative; overflow: hidden;
-  }
-  .cta-box::before { content: ''; position: absolute; top: -1px; left: 20%; right: 20%; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent); }
-  .cta-box h2 { font-family: var(--font-display); font-size: clamp(32px, 4vw, 52px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; }
-  .cta-box p { font-size: 17px; color: var(--muted); font-weight: 300; margin-bottom: 40px; line-height: 1.7; }
-  .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-
-  footer { background: var(--surface); border-top: 1px solid var(--border); padding: 60px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
-  .footer-brand p { font-size: 14px; color: var(--muted); font-weight: 300; margin-top: 14px; line-height: 1.7; max-width: 280px; }
-  .footer-col h5 { font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 20px; color: var(--text); }
-  .footer-col ul { list-style: none; }
-  .footer-col ul li { margin-bottom: 10px; }
-  .footer-col ul li a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 300; transition: color 0.2s; }
-  .footer-col ul li a:hover { color: var(--accent); }
-  .footer-bottom { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 60px; display: flex; justify-content: space-between; align-items: center; }
-  .footer-bottom p { font-size: 13px; color: var(--muted); font-weight: 300; }
-  .social-links { display: flex; gap: 16px; }
-  .social-links a { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
-  .social-links a:hover { border-color: var(--accent); color: var(--accent); }
-
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  @media (max-width: 900px) {
-    nav { padding: 20px 24px; }
-    .nav-links { display: none; }
-    section { padding: 70px 24px; }
-    .hero { padding: 100px 24px 60px; }
-    .services { padding: 70px 24px; }
-    .services-header { grid-template-columns: 1fr; }
-    .stack-scene { grid-template-columns: 1fr; gap: 40px; }
-    .card-stack-wrapper { height: 400px; }
-    .stack-card { height: 290px; }
-    .service-detail { position: static; }
-    .process-grid { grid-template-columns: 1fr 1fr; }
-    .tech-inner { grid-template-columns: 1fr; }
-    .why-grid { grid-template-columns: 1fr; }
-    footer { grid-template-columns: 1fr 1fr; padding: 40px 24px; }
-    .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 12px; }
-    .hero-stats { gap: 28px; }
-    .cta-box { padding: 48px 28px; }
-    .cta-section { padding: 70px 24px; }
-    body { cursor: auto; }
-    .cursor, .cursor-ring { display: none; }
-  }
+.card-cta {
+  color: #00d4ff;
+  text-decoration: none;
+}
 </style>
 </head>
+
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<section class="services">
+  <div class="card-stack-wrapper" id="cardStack">
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="logo">
-    <div class="logo-mark">N</div>
-    Nova Solution
-  </a>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#tech">Tech Stack</a></li>
-    <li><a href="#why">Why Us</a></li>
-  </ul>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in Touch</button>
-</nav>
-
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="hero-inner">
-    <div class="hero-badge">
-      <span class="badge-dot"></span>
-      Digital Innovation Studio
-    </div>
-    <h1>
-      <span class="line-1">We Build Digital</span>
-      <span class="line-2">Experiences That Scale</span>
-    </h1>
-    <p class="hero-sub">From mobile apps to AI-powered platforms — Nova Solution crafts high-performance digital products that grow your business.</p>
-    <div class="hero-ctas">
-      <a href="#services" class="btn-primary">Explore Our Work</a>
-      <a href="#contact" class="btn-ghost">Start a Project →</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><div class="stat-num">50<span>+</span></div><div class="stat-label">Projects Delivered</div></div>
-      <div class="stat"><div class="stat-num">98<span>%</span></div><div class="stat-label">Client Satisfaction</div></div>
-      <div class="stat"><div class="stat-num">6<span>+</span></div><div class="stat-label">Core Specialisms</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-section">
-  <div class="marquee-track">
-    <span class="marquee-item">Mobile Development</span>
-    <span class="marquee-item">Web Development</span>
-    <span class="marquee-item">Bubble.io</span>
-    <span class="marquee-item">GoHighLevel</span>
-    <span class="marquee-item">AI Integration</span>
-    <span class="marquee-item">Software Consulting</span>
-    <span class="marquee-item">Mobile Development</span>
-    <span class="marquee-item">Web Development</span>
-    <span class="marquee-item">Bubble.io</span>
-    <span class="marquee-item">GoHighLevel</span>
-    <span class="marquee-item">AI Integration</span>
-    <span class="marquee-item">Software Consulting</span>
-  </div>
-</div>
-
-<!-- SERVICES — STACKED DECK -->
-<section class="services" id="services">
-  <div class="services-header reveal">
-    <div>
-      <div class="section-label">What We Do</div>
-      <h2 class="section-title">End-to-end digital solutions</h2>
-    </div>
-    <p class="section-desc">We combine deep technical expertise with strategic thinking to deliver software that makes a measurable impact.</p>
-  </div>
-
-  <div class="stack-scene reveal">
-    <!-- LEFT: Stack of cards -->
-    <div>
-      <div class="card-stack-wrapper" id="cardStack">
-
-        <div class="stack-card" data-index="0" data-service="0">
-          <div class="card-top">
-            <div class="card-icon-wrap" style="background:rgba(0,212,255,0.1);">📱</div>
-            <span class="card-num">01 / 06</span>
-          </div>
-          <div class="card-body">
-            <h3>Mobile Development</h3>
-            <p>Native & cross-platform apps for iOS and Android. Smooth UX, robust architecture, and App Store-ready delivery.</p>
-          </div>
-          <div class="card-footer">
-            <span class="card-tag" style="background:rgba(0,212,255,0.08);color:var(--accent);">iOS · Android · React Native</span>
-            <div class="card-action">+</div>
-          </div>
-        </div>
-
-        <div class="stack-card" data-index="1" data-service="1">
-          <div class="card-top">
-            <div class="card-icon-wrap" style="background:rgba(124,58,237,0.1);">🌐</div>
-            <span class="card-num">02 / 06</span>
-          </div>
-          <div class="card-body">
-            <h3>Web Development</h3>
-            <p>Fast, scalable web platforms built with modern frameworks. From landing pages to complex SaaS dashboards.</p>
-          </div>
-          <div class="card-footer">
-            <span class="card-tag" style="background:rgba(124,58,237,0.1);color:#a78bfa;">React · Next.js · Node</span>
-            <div class="card-action">+</div>
-          </div>
-        </div>
-
-        <div class="stack-card" data-index="2" data-service="2">
-          <div class="card-top">
-            <div class="card-icon-wrap" style="background:rgba(245,158,11,0.1);">⚡</div>
-            <span class="card-num">03 / 06</span>
-          </div>
-          <div class="card-body">
-            <h3>Bubble.io Development</h3>
-            <p>Expert no-code MVPs and full products on Bubble.io. Launch faster without sacrificing quality or scalability.</p>
-          </div>
-          <div class="card-footer">
-            <span class="card-tag" style="background:rgba(245,158,11,0.1);color:#fbbf24;">No-Code · MVP · SaaS</span>
-            <div class="card-action">+</div>
-          </div>
-        </div>
-
-        <div class="stack-card" data-index="3" data-service="3">
-          <div class="card-top">
-            <div class="card-icon-wrap" style="background:rgba(16,185,129,0.1);">📈</div>
-            <span class="card-num">04 / 06</span>
-          </div>
-          <div class="card-body">
-            <h3>GoHighLevel</h3>
-            <p>Custom GHL setups, automation funnels, CRM configurations, and white-label agency deployments.</p>
-          </div>
-          <div class="card-footer">
-            <span class="card-tag" style="background:rgba(16,185,129,0.1);color:#34d399;">CRM · Funnels · Automation</span>
-            <div class="card-action">+</div>
-          </div>
-        </div>
-
-        <div class="stack-card" data-index="4" data-service="4">
-          <div class="card-top">
-            <div class="card-icon-wrap" style="background:rgba(239,68,68,0.1);">🤖</div>
-            <span class="card-num">05 / 06</span>
-          </div>
-          <div class="card-body">
-            <h3>AI Integration</h3>
-            <p>Embed GPT-4, Claude, and custom ML models into your products. Chatbots, data pipelines, and intelligent features.</p>
-          </div>
-          <div class="card-footer">
-            <span class="card-tag" style="background:rgba(239,68,68,0.1);color:#f87171;">GPT · Claude · Automation</span>
-            <div class="card-action">+</div>
-          </div>
-        </div>
-
-        <div class="stack-card" data-index="5" data-service="5">
-          <div class="card-top">
-            <div class="card-icon-wrap" style="background:rgba(168,85,247,0.1);">🔧</div>
-            <span class="card-num">06 / 06</span>
-          </div>
-          <div class="card-body">
-            <h3>Software Consulting</h3>
-            <p>Architecture reviews, tech stack strategy, team augmentation, and ongoing technical advisory for growing companies.</p>
-          </div>
-          <div class="card-footer">
-            <span class="card-tag" style="background:rgba(168,85,247,0.1);color:#c084fc;">Strategy · Architecture</span>
-            <div class="card-action">+</div>
-          </div>
-        </div>
-
+    <div class="stack-card" data-index="0" data-service="0">
+      <div class="card-top">📱 <span>01</span></div>
+      <div class="card-body">
+        <h3>Mobile Development</h3>
+        <p>iOS & Android apps</p>
+        <ul class="card-features">
+          <li>React Native / Swift</li>
+          <li>App Store Launch</li>
+          <li>Offline support</li>
+        </ul>
       </div>
+      <a href="#" class="card-cta">Start Project →</a>
+    </div>
 
-      <!-- Deck navigation -->
-      <div class="deck-nav">
-        <button class="deck-btn" id="prevBtn" title="Previous">←</button>
-        <div class="deck-dots" id="deckDots">
-          <div class="deck-dot active"></div>
-          <div class="deck-dot"></div>
-          <div class="deck-dot"></div>
-          <div class="deck-dot"></div>
-          <div class="deck-dot"></div>
-          <div class="deck-dot"></div>
-        </div>
-        <div class="deck-counter" id="deckCounter">1 / 6</div>
-        <button class="deck-btn" id="nextBtn" title="Next">→</button>
+    <div class="stack-card" data-index="1" data-service="1">
+      <div class="card-top">🌐 <span>02</span></div>
+      <div class="card-body">
+        <h3>Web Development</h3>
+        <p>Modern scalable apps</p>
+        <ul class="card-features">
+          <li>React / Next.js</li>
+          <li>SaaS dashboards</li>
+          <li>SEO optimized</li>
+        </ul>
       </div>
+      <a href="#" class="card-cta">Start Project →</a>
     </div>
 
-    <!-- RIGHT: Detail Panel -->
-    <div class="service-detail">
-      <div class="detail-panel">
-        <div class="detail-header">
-          <div class="detail-header-bg" id="detailBg"></div>
-          <div class="detail-content" id="detailContent">
-            <span class="detail-icon" id="detailIcon">📱</span>
-            <div class="detail-title" id="detailTitle">Mobile Development</div>
-            <div class="detail-tagline" id="detailTagline">Native & cross-platform apps built for performance and scale.</div>
-          </div>
-        </div>
-        <div class="detail-body">
-          <div class="detail-content" id="detailBody">
-
-            <!-- Mobile mockup (shown for service 0) -->
-            <div class="mobile-mockup-container visible" id="mobileMockup">
-              <div class="mobile-frame">
-                <div class="mobile-notch">
-                  <div class="notch-cam"></div>
-                  <div class="notch-speaker"></div>
-                </div>
-                <div class="mobile-screen">
-                  <div class="mobile-status-bar"><span>9:41</span><span>●●● WiFi ■</span></div>
-                  <div class="mobile-app-header">
-                    <div class="mobile-app-title">Nova App</div>
-                    <div class="mobile-app-sub">Dashboard · Good morning 👋</div>
-                  </div>
-                  <div class="mobile-cards">
-                    <div class="mobile-card"><span class="mobile-card-icon">📊</span><div class="mobile-card-text"><div class="mobile-card-label">Analytics</div><div class="mobile-card-sub">+24% this week</div></div><div class="mobile-card-dot"></div></div>
-                    <div class="mobile-card"><span class="mobile-card-icon">🛒</span><div class="mobile-card-text"><div class="mobile-card-label">Orders</div><div class="mobile-card-sub">12 pending</div></div><div class="mobile-card-dot" style="background:#f59e0b;"></div></div>
-                    <div class="mobile-card"><span class="mobile-card-icon">💬</span><div class="mobile-card-text"><div class="mobile-card-label">Messages</div><div class="mobile-card-sub">3 unread</div></div><div class="mobile-card-dot" style="background:#7c3aed;"></div></div>
-                  </div>
-                  <div class="mobile-nav">
-                    <div class="mobile-nav-item active"><div class="mobile-nav-icon">🏠</div>Home</div>
-                    <div class="mobile-nav-item"><div class="mobile-nav-icon">🔍</div>Search</div>
-                    <div class="mobile-nav-item"><div class="mobile-nav-icon">💼</div>Work</div>
-                    <div class="mobile-nav-item"><div class="mobile-nav-icon">👤</div>Profile</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Browser mockup (shown for service 1) -->
-            <div class="browser-mockup-container" id="browserMockup">
-              <div class="browser-frame">
-                <div class="browser-bar">
-                  <div class="browser-dots">
-                    <div class="browser-dot" style="background:#ff5f57;"></div>
-                    <div class="browser-dot" style="background:#febc2e;"></div>
-                    <div class="browser-dot" style="background:#28c840;"></div>
-                  </div>
-                  <div class="browser-url">novasolution.io/dashboard</div>
-                </div>
-                <div class="browser-content">
-                  <div class="browser-hero">
-                    <span style="font-size:24px;">🚀</span>
-                    <div class="browser-hero-text"><h4>SaaS Dashboard</h4><p>Real-time analytics · React · Next.js</p></div>
-                  </div>
-                  <div class="browser-grid">
-                    <div class="browser-card"><div class="browser-card-icon">📈</div><div class="browser-card-label">Revenue</div><div class="browser-card-sub">$48,290 MRR</div></div>
-                    <div class="browser-card"><div class="browser-card-icon">👥</div><div class="browser-card-label">Users</div><div class="browser-card-sub">12,847 active</div></div>
-                    <div class="browser-card"><div class="browser-card-icon">⚡</div><div class="browser-card-label">Uptime</div><div class="browser-card-sub">99.99% SLA</div></div>
-                    <div class="browser-card"><div class="browser-card-icon">🔒</div><div class="browser-card-label">Security</div><div class="browser-card-sub">SOC2 ready</div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- AI chat mockup (shown for service 4) -->
-            <div class="ai-mockup-container" id="aiMockup">
-              <div class="ai-chat">
-                <div class="ai-chat-header">
-                  <div class="ai-chat-avatar">🤖</div>
-                  <div><div class="ai-chat-name">Nova AI Assistant</div><div class="ai-chat-status">Online</div></div>
-                </div>
-                <div class="ai-messages">
-                  <div class="ai-msg user"><div class="ai-bubble">Summarize my sales report for Q3</div></div>
-                  <div class="ai-msg bot"><div class="ai-bubble">Q3 revenue reached $1.2M, up 34% vs Q2. Top performer: Enterprise tier (+62%). Churn dropped to 2.1%. Recommend focusing on SMB expansion next quarter. 📊</div></div>
-                  <div class="ai-msg user"><div class="ai-bubble">What's the trend for next month?</div></div>
-                  <div class="ai-msg bot"><div class="ai-typing"><span></span><span></span><span></span></div></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="detail-features" id="detailFeatures">
-              <div class="detail-feature">
-                <div class="feature-check" style="background:rgba(0,212,255,0.1);color:var(--accent);">✓</div>
-                <div class="feature-text"><div class="feature-label">iOS & Android Native</div><div class="feature-sub">Swift, Kotlin, or React Native for maximum performance</div></div>
-              </div>
-              <div class="detail-feature">
-                <div class="feature-check" style="background:rgba(0,212,255,0.1);color:var(--accent);">✓</div>
-                <div class="feature-text"><div class="feature-label">App Store Submission</div><div class="feature-sub">Full deployment to App Store & Google Play included</div></div>
-              </div>
-              <div class="detail-feature">
-                <div class="feature-check" style="background:rgba(0,212,255,0.1);color:var(--accent);">✓</div>
-                <div class="feature-text"><div class="feature-label">Offline-First Architecture</div><div class="feature-sub">Local sync, push notifications, background processing</div></div>
-              </div>
-            </div>
-
-            <div class="detail-cta">
-              <a href="#contact" class="btn-primary">Start Mobile Project</a>
-              <a href="#contact" class="btn-ghost">Learn More</a>
-            </div>
-          </div>
-        </div>
+    <div class="stack-card" data-index="2" data-service="2">
+      <div class="card-top">⚡ <span>03</span></div>
+      <div class="card-body">
+        <h3>Bubble.io</h3>
+        <p>No-code MVPs</p>
+        <ul class="card-features">
+          <li>Fast launch</li>
+          <li>Custom APIs</li>
+          <li>Scalable DB</li>
+        </ul>
       </div>
+      <a href="#" class="card-cta">Start Project →</a>
     </div>
+
+    <div class="stack-card" data-index="3" data-service="3">
+      <div class="card-top">📈 <span>04</span></div>
+      <div class="card-body">
+        <h3>GoHighLevel</h3>
+        <p>CRM automation</p>
+        <ul class="card-features">
+          <li>Funnels</li>
+          <li>Email/SMS</li>
+          <li>Automation</li>
+        </ul>
+      </div>
+      <a href="#" class="card-cta">Start Project →</a>
+    </div>
+
+    <div class="stack-card" data-index="4" data-service="4">
+      <div class="card-top">🤖 <span>05</span></div>
+      <div class="card-body">
+        <h3>AI Integration</h3>
+        <p>Smart automation</p>
+        <ul class="card-features">
+          <li>Chatbots</li>
+          <li>Data pipelines</li>
+          <li>GPT integration</li>
+        </ul>
+      </div>
+      <a href="#" class="card-cta">Start Project →</a>
+    </div>
+
+    <div class="stack-card" data-index="5" data-service="5">
+      <div class="card-top">🔧 <span>06</span></div>
+      <div class="card-body">
+        <h3>Consulting</h3>
+        <p>Scale your system</p>
+        <ul class="card-features">
+          <li>Architecture</li>
+          <li>Tech strategy</li>
+          <li>Team scaling</li>
+        </ul>
+      </div>
+      <a href="#" class="card-cta">Start Project →</a>
+    </div>
+
   </div>
 </section>
-
-<!-- PROCESS -->
-<section class="process" id="process">
-  <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
-    <div class="section-label">How We Work</div>
-    <h2 class="section-title">Our process, refined</h2>
-    <p class="section-desc" style="margin:0 auto;">A clear, structured approach that keeps projects on time, on budget, and on brief.</p>
-  </div>
-  <div class="process-grid reveal">
-    <div class="process-step"><div class="step-num">01</div><div class="step-icon">💡</div><h4>Discovery</h4><p>Deep-dive into your goals, users, and constraints. We define scope, KPIs, and technical requirements.</p></div>
-    <div class="process-step"><div class="step-num">02</div><div class="step-icon">🎨</div><h4>Design & Plan</h4><p>Wireframes, UI design, system architecture. You approve every decision before we write a line of code.</p></div>
-    <div class="process-step"><div class="step-num">03</div><div class="step-icon">⚙️</div><h4>Build & Iterate</h4><p>Agile sprints with weekly demos. Continuous feedback loops ensure the product evolves with your vision.</p></div>
-    <div class="process-step"><div class="step-num">04</div><div class="step-icon">🚀</div><h4>Launch & Grow</h4><p>QA-tested, deployed, and supported post-launch. We stay on to monitor, optimize, and scale.</p></div>
-  </div>
-</section>
-
-<!-- TECH STACK -->
-<section class="tech" id="tech">
-  <div class="tech-inner">
-    <div class="reveal">
-      <div class="section-label">Tech Stack</div>
-      <h2 class="section-title">Built with the best tools</h2>
-      <p class="section-desc">We choose the right technology for your specific needs — not what's trendy.</p>
-    </div>
-    <div class="tech-pills reveal">
-      <div class="tech-pill"><span class="tech-pill-icon">⚛️</span> React / Next.js</div>
-      <div class="tech-pill"><span class="tech-pill-icon">📱</span> React Native</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🟢</span> Node.js</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🫧</span> Bubble.io</div>
-      <div class="tech-pill"><span class="tech-pill-icon">📊</span> GoHighLevel</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🤖</span> OpenAI / GPT-4</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🧠</span> Claude AI</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🔥</span> Firebase</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🐘</span> PostgreSQL</div>
-      <div class="tech-pill"><span class="tech-pill-icon">☁️</span> AWS / Vercel</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🐳</span> Docker</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🔗</span> REST & GraphQL</div>
-      <div class="tech-pill"><span class="tech-pill-icon">💜</span> TypeScript</div>
-      <div class="tech-pill"><span class="tech-pill-icon">🎭</span> Tailwind CSS</div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY US -->
-<section class="why" id="why">
-  <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto 0;">
-    <div class="section-label">Why Nova</div>
-    <h2 class="section-title">Partners, not just vendors</h2>
-    <p class="section-desc" style="margin:0 auto;">We invest in your success like it's our own.</p>
-  </div>
-  <div class="why-grid reveal">
-    <div class="why-card"><div class="icon">⚡</div><h4>Fast Turnaround</h4><p>Lean team, zero bureaucracy. We move quickly without cutting corners on quality or testing.</p></div>
-    <div class="why-card"><div class="icon">🎯</div><h4>Outcome-Focused</h4><p>We measure success by your results — signups, revenue, retention — not just deliverables shipped.</p></div>
-    <div class="why-card"><div class="icon">🔍</div><h4>Full Transparency</h4><p>Weekly progress updates, open codebases, and honest conversations. No surprises, ever.</p></div>
-    <div class="why-card"><div class="icon">🏗️</div><h4>Scalable Architecture</h4><p>We build for where you're going, not just where you are today. Future-proof from day one.</p></div>
-    <div class="why-card"><div class="icon">🤝</div><h4>Long-term Partnership</h4><p>Many of our clients have worked with us for years. We become an extension of your team.</p></div>
-    <div class="why-card"><div class="icon">🌍</div><h4>Global Expertise</h4><p>Remote-first team with experience delivering for clients across the US, Europe, and MENA.</p></div>
-  </div>
-</section>
-
-<!-- CTA -->
-<div class="cta-section" id="contact">
-  <div class="cta-box reveal">
-    <h2>Ready to build something great?</h2>
-    <p>Tell us about your project and we'll get back to you within 24 hours with a tailored proposal.</p>
-    <div class="cta-buttons">
-      <a href="mailto:hello@novasolution.io" class="btn-primary">hello@novasolution.io</a>
-      <a href="#" class="btn-ghost">Schedule a Call →</a>
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-brand">
-    <a href="#" class="logo" style="text-decoration:none;"><div class="logo-mark">N</div>Nova Solution</a>
-    <p>A digital product studio specializing in mobile, web, no-code, and AI solutions for startups and scale-ups.</p>
-  </div>
-  <div class="footer-col"><h5>Services</h5><ul><li><a href="#">Mobile Development</a></li><li><a href="#">Web Development</a></li><li><a href="#">Bubble.io</a></li><li><a href="#">GoHighLevel</a></li><li><a href="#">AI Integration</a></li></ul></div>
-  <div class="footer-col"><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Process</a></li><li><a href="#">Case Studies</a></li><li><a href="#">Blog</a></li></ul></div>
-  <div class="footer-col"><h5>Contact</h5><ul><li><a href="#">hello@novasolution.io</a></li><li><a href="#">Schedule a Call</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter / X</a></li></ul></div>
-</footer>
-<div class="footer-bottom">
-  <p>© 2025 Nova Solution. All rights reserved.</p>
-  <div class="social-links">
-    <a href="#" title="LinkedIn">in</a>
-    <a href="#" title="Twitter">𝕏</a>
-    <a href="#" title="GitHub">⌥</a>
-  </div>
-</div>
 
 <script>
-// ── Cursor ──
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = (mx - 5) + 'px';
-  cursor.style.top = (my - 5) + 'px';
-});
-(function animateRing() {
-  rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(animateRing);
-})();
-document.querySelectorAll('a, button, .stack-card, .why-card, .tech-pill, .detail-feature').forEach(el => {
-  el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
-  el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
-});
+const cards = document.querySelectorAll('.stack-card');
+const total = cards.length;
+let current = 0;
+let locked = false;
 
-// ── Scroll reveal ──
-const observer = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      e.target.style.transitionDelay = (i * 0.05) + 's';
-      e.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ── Services Data ──
-const services = [
-  {
-    icon: '📱',
-    title: 'Mobile Development',
-    tagline: 'Native & cross-platform apps built for performance and scale.',
-    accent: 'rgba(0,212,255,0.15)',
-    ctaLabel: 'Start Mobile Project',
-    mockup: 'mobile',
-    features: [
-      { label: 'iOS & Android Native', sub: 'Swift, Kotlin, or React Native for maximum performance' },
-      { label: 'App Store Submission', sub: 'Full deployment to App Store & Google Play included' },
-      { label: 'Offline-First Architecture', sub: 'Local sync, push notifications, background processing' },
-    ]
-  },
-  {
-    icon: '🌐',
-    title: 'Web Development',
-    tagline: 'Fast, scalable web platforms that drive growth and engagement.',
-    accent: 'rgba(124,58,237,0.15)',
-    ctaLabel: 'Start Web Project',
-    mockup: 'browser',
-    features: [
-      { label: 'Modern Frameworks', sub: 'React, Next.js, Vue — SSR, SSG, and edge rendering' },
-      { label: 'SaaS & Dashboards', sub: 'Complex data-rich apps with real-time capabilities' },
-      { label: 'SEO & Performance', sub: 'Core Web Vitals optimized, 95+ Lighthouse scores' },
-    ]
-  },
-  {
-    icon: '⚡',
-    title: 'Bubble.io Development',
-    tagline: 'Launch your no-code MVP in weeks, not months.',
-    accent: 'rgba(245,158,11,0.15)',
-    ctaLabel: 'Build Your MVP',
-    mockup: 'none',
-    features: [
-      { label: 'Rapid MVP Launch', sub: 'Full product in 2–4 weeks with production-ready setup' },
-      { label: 'Custom Plugins & APIs', sub: 'Extend Bubble with any third-party integration' },
-      { label: 'Scalable Architecture', sub: 'Database design that grows with your user base' },
-    ]
-  },
-  {
-    icon: '📈',
-    title: 'GoHighLevel',
-    tagline: 'CRM automation and funnels that convert leads into revenue.',
-    accent: 'rgba(16,185,129,0.15)',
-    ctaLabel: 'Automate Your Sales',
-    mockup: 'none',
-    features: [
-      { label: 'Custom GHL Snapshots', sub: 'White-label agency setups and full configuration' },
-      { label: 'Funnel & Automation', sub: 'Multi-step workflows, email/SMS sequences, pipelines' },
-      { label: 'CRM Integration', sub: 'Connect GHL to your existing tech stack seamlessly' },
-    ]
-  },
-  {
-    icon: '🤖',
-    title: 'AI Integration',
-    tagline: 'Embed intelligence into your product with GPT-4, Claude & more.',
-    accent: 'rgba(239,68,68,0.15)',
-    ctaLabel: 'Add AI to Your Product',
-    mockup: 'ai',
-    features: [
-      { label: 'Chatbots & Assistants', sub: 'Custom-trained AI agents with your brand voice' },
-      { label: 'Data Pipelines', sub: 'Document processing, extraction, and summarization at scale' },
-      { label: 'LLM Fine-tuning', sub: 'Specialized models trained on your domain knowledge' },
-    ]
-  },
-  {
-    icon: '🔧',
-    title: 'Software Consulting',
-    tagline: 'Strategic technical guidance to scale your engineering operation.',
-    accent: 'rgba(168,85,247,0.15)',
-    ctaLabel: 'Book a Consultation',
-    mockup: 'none',
-    features: [
-      { label: 'Architecture Review', sub: 'Identify bottlenecks and define the path to scalability' },
-      { label: 'Tech Stack Strategy', sub: 'Make the right build-vs-buy decisions for your stage' },
-      { label: 'Team Augmentation', sub: 'Embed senior engineers directly into your squad' },
-    ]
-  }
-];
-
-// ── Deck State ──
-let currentIndex = 0;
-const totalCards = services.length;
-const stackEl = document.getElementById('cardStack');
-const cards = Array.from(stackEl.querySelectorAll('.stack-card'));
-const dots = Array.from(document.getElementById('deckDots').querySelectorAll('.deck-dot'));
-const counter = document.getElementById('deckCounter');
-
-// Map original card elements to services via data-service
-function getCardByService(sIdx) {
-  return cards.find(c => parseInt(c.dataset.service) === sIdx);
-}
-
-function updateDetail(sIdx) {
-  const s = services[sIdx];
-  const contentEls = document.querySelectorAll('.detail-content');
-
-  contentEls.forEach(el => el.classList.add('fade-out'));
-
-  setTimeout(() => {
-    document.getElementById('detailIcon').textContent = s.icon;
-    document.getElementById('detailTitle').textContent = s.title;
-    document.getElementById('detailTagline').textContent = s.tagline;
-    document.getElementById('detailBg').style.background =
-      `radial-gradient(ellipse at 50% 0%, ${s.accent}, transparent)`;
-
-    // Mockups
-    document.getElementById('mobileMockup').classList.toggle('visible', s.mockup === 'mobile');
-    document.getElementById('browserMockup').classList.toggle('visible', s.mockup === 'browser');
-    document.getElementById('aiMockup').classList.toggle('visible', s.mockup === 'ai');
-
-    // Features
-    const featHtml = s.features.map(f => `
-      <div class="detail-feature">
-        <div class="feature-check" style="background:rgba(0,212,255,0.1);color:var(--accent);">✓</div>
-        <div class="feature-text">
-          <div class="feature-label">${f.label}</div>
-          <div class="feature-sub">${f.sub}</div>
-        </div>
-      </div>`).join('');
-    document.getElementById('detailFeatures').innerHTML = featHtml;
-
-    // CTA
-    const ctaHtml = `
-      <a href="#contact" class="btn-primary">${s.ctaLabel}</a>
-      <a href="#contact" class="btn-ghost">Learn More</a>`;
-    document.getElementById('detailBody').querySelector('.detail-cta').innerHTML = ctaHtml;
-
-    contentEls.forEach(el => el.classList.remove('fade-out'));
-  }, 220);
-}
-
-function updateDots(idx) {
-  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-  counter.textContent = `${idx + 1} / ${totalCards}`;
-}
-
-function reorderStack(newTopService) {
-  // Build order: newTopService, newTopService+1, ..., wrap
-  const order = [];
-  for (let i = 0; i < totalCards; i++) {
-    order.push((newTopService + i) % totalCards);
-  }
-  // Apply positions
+function updateStack() {
   cards.forEach(card => {
-    const sIdx = parseInt(card.dataset.service);
-    const pos = order.indexOf(sIdx);
+    const s = parseInt(card.dataset.service);
+    let pos = (s - current + total) % total;
     card.dataset.index = pos;
-    card.style.transition = 'transform 0.55s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease, box-shadow 0.4s ease';
-    applyCardPosition(card, pos);
   });
 }
 
-function applyCardPosition(card, pos) {
-  const configs = [
-    { y: 0,   scale: 1.00, rotX: 0, z: 6, opacity: 1,   shadow: '0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.15)', bg: 'linear-gradient(145deg, #131c2f 0%, #0f1620 100%)' },
-    { y: 28,  scale: 0.96, rotX: 1, z: 5, opacity: 1,   shadow: '0 20px 60px rgba(0,0,0,0.4)', bg: 'linear-gradient(145deg, #161428 0%, #120f20 100%)' },
-    { y: 52,  scale: 0.92, rotX: 2, z: 4, opacity: 1,   shadow: '0 12px 40px rgba(0,0,0,0.3)', bg: 'linear-gradient(145deg, #191320 0%, #150f1a 100%)' },
-    { y: 72,  scale: 0.88, rotX: 3, z: 3, opacity: 0.8, shadow: '0 6px 20px rgba(0,0,0,0.2)', bg: 'linear-gradient(145deg, #1a1218 0%, #150e14 100%)' },
-    { y: 88,  scale: 0.84, rotX: 4, z: 2, opacity: 0.6, shadow: '', bg: 'linear-gradient(145deg, #1a1116 0%, #150d12 100%)' },
-    { y: 100, scale: 0.80, rotX: 5, z: 1, opacity: 0.3, shadow: '', bg: '#181014' },
-  ];
-  const cfg = configs[Math.min(pos, configs.length - 1)];
-  card.style.transform = `translateY(${cfg.y}px) scale(${cfg.scale}) rotateX(${cfg.rotX}deg)`;
-  card.style.zIndex = cfg.z;
-  card.style.opacity = cfg.opacity;
-  card.style.boxShadow = cfg.shadow;
-  card.style.background = cfg.bg;
-}
+/* SCROLL CONTROL */
+window.addEventListener('wheel', (e) => {
+  if (locked) return;
+  locked = true;
 
-function goToService(sIdx) {
-  if (sIdx === currentIndex) return;
-  currentIndex = sIdx;
-  reorderStack(currentIndex);
-  updateDots(currentIndex);
-  updateDetail(currentIndex);
-}
+  if (e.deltaY > 0) {
+    current = (current + 1) % total;
+  } else {
+    current = (current - 1 + total) % total;
+  }
 
-function nextService() {
-  goToService((currentIndex + 1) % totalCards);
-}
+  updateStack();
 
-function prevService() {
-  goToService((currentIndex - 1 + totalCards) % totalCards);
-}
-
-// Click on a card to bring it to top
-cards.forEach(card => {
-  card.addEventListener('click', () => {
-    const sIdx = parseInt(card.dataset.service);
-    goToService(sIdx);
-  });
+  setTimeout(() => locked = false, 500);
 });
 
-// Navigation buttons
-document.getElementById('nextBtn').addEventListener('click', nextService);
-document.getElementById('prevBtn').addEventListener('click', prevService);
-
-// Dot clicks
-dots.forEach((dot, i) => {
-  dot.addEventListener('click', () => goToService(i));
+/* TOUCH SUPPORT */
+let startY = 0;
+window.addEventListener('touchstart', e => {
+  startY = e.touches[0].clientY;
 });
 
-// Swipe support
-let touchStartX = 0;
-stackEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-stackEl.addEventListener('touchend', e => {
-  const diff = touchStartX - e.changedTouches[0].clientX;
-  if (Math.abs(diff) > 40) { diff > 0 ? nextService() : prevService(); }
+window.addEventListener('touchend', e => {
+  let diff = startY - e.changedTouches[0].clientY;
+
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) current = (current + 1) % total;
+    else current = (current - 1 + total) % total;
+    updateStack();
+  }
 });
 
-// Init
-updateDetail(0);
-updateDots(0);
+/* INIT */
+updateStack();
 </script>
+
 </body>
 </html>
+```
