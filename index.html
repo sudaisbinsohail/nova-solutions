@@ -7,101 +7,158 @@
 <title>Nova Solution</title>
 
 <style>
+:root {
+  --bg:#060810;
+  --card:#111827;
+  --accent:#00d4ff;
+  --text:#fff;
+  --muted:#9aa4b2;
+}
+
 body {
-  margin: 0;
-  background: #060810;
-  color: white;
-  font-family: sans-serif;
-  overflow-x: hidden;
+  margin:0;
+  font-family:sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
-/* SECTION */
+/* NAV */
+nav {
+  padding:20px 40px;
+  display:flex;
+  justify-content:space-between;
+  position:fixed;
+  width:100%;
+  background:#060810cc;
+  backdrop-filter:blur(10px);
+}
+
+/* HERO */
+.hero {
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.hero h1 {
+  font-size:48px;
+}
+
+/* SERVICES */
 .services {
-  padding: 100px 20px;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding:120px 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
-/* STACK */
+.services-header {
+  text-align:center;
+  margin-bottom:60px;
+}
+
 .card-stack-wrapper {
-  position: relative;
-  width: 320px;
-  height: 450px;
+  position:relative;
+  width:340px;
+  height:480px;
 }
 
 /* CARD */
 .stack-card {
-  position: absolute;
-  width: 100%;
-  height: 420px;
-  border-radius: 20px;
-  padding: 20px;
-  background: #111827;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: all 0.5s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position:absolute;
+  width:100%;
+  height:420px;
+  border-radius:20px;
+  padding:20px;
+  background:var(--card);
+  border:1px solid rgba(255,255,255,0.08);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:all 0.5s ease;
 }
 
-/* POSITIONS */
-.stack-card[data-index="0"] { transform: translateY(0) scale(1); z-index: 5; }
-.stack-card[data-index="1"] { transform: translateY(20px) scale(0.95); z-index: 4; }
-.stack-card[data-index="2"] { transform: translateY(40px) scale(0.9); z-index: 3; }
-.stack-card[data-index="3"] { transform: translateY(60px) scale(0.85); z-index: 2; }
-.stack-card[data-index="4"] { transform: translateY(80px) scale(0.8); z-index: 1; opacity: 0.6; }
-.stack-card[data-index="5"] { transform: translateY(100px) scale(0.75); opacity: 0.3; }
+/* STACK POSITIONS */
+.stack-card[data-index="0"] { transform:translateY(0) scale(1); z-index:6; }
+.stack-card[data-index="1"] { transform:translateY(30px) scale(.95); z-index:5; }
+.stack-card[data-index="2"] { transform:translateY(55px) scale(.9); z-index:4; }
+.stack-card[data-index="3"] { transform:translateY(75px) scale(.85); z-index:3; }
+.stack-card[data-index="4"] { transform:translateY(95px) scale(.8); z-index:2; opacity:.6;}
+.stack-card[data-index="5"] { transform:translateY(110px) scale(.75); opacity:.3; }
 
-/* CONTENT */
+/* CARD CONTENT */
 .card-top {
-  display: flex;
-  justify-content: space-between;
-  font-size: 20px;
+  display:flex;
+  justify-content:space-between;
 }
 
 .card-body h3 {
-  margin: 10px 0;
+  margin:10px 0;
 }
 
 .card-features {
-  font-size: 13px;
-  color: #aaa;
-  padding-left: 16px;
+  padding-left:16px;
+  font-size:13px;
+  color:var(--muted);
 }
 
 .card-features li {
-  margin-bottom: 6px;
+  margin-bottom:6px;
 }
 
 .card-cta {
-  color: #00d4ff;
-  text-decoration: none;
+  color:var(--accent);
+  text-decoration:none;
+}
+
+/* OTHER SECTIONS */
+.section {
+  padding:100px 20px;
+  text-align:center;
 }
 </style>
 </head>
 
 <body>
 
-<section class="services">
+<nav>
+  <div>Nova</div>
+  <div>Menu</div>
+</nav>
+
+<section class="hero">
+  <div>
+    <h1>We Build Digital Products</h1>
+    <p>Mobile, Web & AI Solutions</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <h2>Our Services</h2>
+    <p>Scroll to explore</p>
+  </div>
+
   <div class="card-stack-wrapper" id="cardStack">
 
-    <div class="stack-card" data-index="0" data-service="0">
+    <div class="stack-card" data-service="0">
       <div class="card-top">📱 <span>01</span></div>
       <div class="card-body">
         <h3>Mobile Development</h3>
         <p>iOS & Android apps</p>
         <ul class="card-features">
-          <li>React Native / Swift</li>
-          <li>App Store Launch</li>
+          <li>React Native</li>
+          <li>Swift/Kotlin</li>
           <li>Offline support</li>
         </ul>
       </div>
       <a href="#" class="card-cta">Start Project →</a>
     </div>
 
-    <div class="stack-card" data-index="1" data-service="1">
+    <div class="stack-card" data-service="1">
       <div class="card-top">🌐 <span>02</span></div>
       <div class="card-body">
         <h3>Web Development</h3>
@@ -115,7 +172,7 @@ body {
       <a href="#" class="card-cta">Start Project →</a>
     </div>
 
-    <div class="stack-card" data-index="2" data-service="2">
+    <div class="stack-card" data-service="2">
       <div class="card-top">⚡ <span>03</span></div>
       <div class="card-body">
         <h3>Bubble.io</h3>
@@ -129,7 +186,7 @@ body {
       <a href="#" class="card-cta">Start Project →</a>
     </div>
 
-    <div class="stack-card" data-index="3" data-service="3">
+    <div class="stack-card" data-service="3">
       <div class="card-top">📈 <span>04</span></div>
       <div class="card-body">
         <h3>GoHighLevel</h3>
@@ -143,7 +200,7 @@ body {
       <a href="#" class="card-cta">Start Project →</a>
     </div>
 
-    <div class="stack-card" data-index="4" data-service="4">
+    <div class="stack-card" data-service="4">
       <div class="card-top">🤖 <span>05</span></div>
       <div class="card-body">
         <h3>AI Integration</h3>
@@ -157,7 +214,7 @@ body {
       <a href="#" class="card-cta">Start Project →</a>
     </div>
 
-    <div class="stack-card" data-index="5" data-service="5">
+    <div class="stack-card" data-service="5">
       <div class="card-top">🔧 <span>06</span></div>
       <div class="card-body">
         <h3>Consulting</h3>
@@ -174,38 +231,46 @@ body {
   </div>
 </section>
 
+<section class="section">
+  <h2>More Sections</h2>
+</section>
+
 <script>
 const cards = document.querySelectorAll('.stack-card');
 const total = cards.length;
+
 let current = 0;
 let locked = false;
 
 function updateStack() {
   cards.forEach(card => {
-    const s = parseInt(card.dataset.service);
+    let s = parseInt(card.dataset.service);
     let pos = (s - current + total) % total;
     card.dataset.index = pos;
   });
 }
 
-/* SCROLL CONTROL */
 window.addEventListener('wheel', (e) => {
+  const rect = document.getElementById('services').getBoundingClientRect();
+
+  if (rect.top > 200 || rect.bottom < 200) return;
   if (locked) return;
+
   locked = true;
 
-  if (e.deltaY > 0) {
-    current = (current + 1) % total;
-  } else {
-    current = (current - 1 + total) % total;
-  }
+  if (e.deltaY > 0) current++;
+  else current--;
+
+  current = (current + total) % total;
 
   updateStack();
 
   setTimeout(() => locked = false, 500);
 });
 
-/* TOUCH SUPPORT */
+/* MOBILE */
 let startY = 0;
+
 window.addEventListener('touchstart', e => {
   startY = e.touches[0].clientY;
 });
@@ -214,13 +279,14 @@ window.addEventListener('touchend', e => {
   let diff = startY - e.changedTouches[0].clientY;
 
   if (Math.abs(diff) > 50) {
-    if (diff > 0) current = (current + 1) % total;
-    else current = (current - 1 + total) % total;
+    if (diff > 0) current++;
+    else current--;
+
+    current = (current + total) % total;
     updateStack();
   }
 });
 
-/* INIT */
 updateStack();
 </script>
 
