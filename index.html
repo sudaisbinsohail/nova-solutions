@@ -3,292 +3,1438 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nova Solution</title>
-
+<title>Nova Solution — Digital Innovation Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#060810;
-  --card:#111827;
-  --accent:#00d4ff;
-  --text:#fff;
-  --muted:#9aa4b2;
-}
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-  margin:0;
-  font-family:sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+  :root {
+    --bg: #060810;
+    --surface: #0d1120;
+    --card: #111827;
+    --border: rgba(255,255,255,0.07);
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #f0f4ff;
+    --muted: #8892a4;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
 
-/* NAV */
-nav {
-  padding:20px 40px;
-  display:flex;
-  justify-content:space-between;
-  position:fixed;
-  width:100%;
-  background:#060810cc;
-  backdrop-filter:blur(10px);
-}
+  html { scroll-behavior: smooth; }
 
-/* HERO */
-.hero {
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-.hero h1 {
-  font-size:48px;
-}
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid rgba(0,212,255,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    transform: translate(-50%,-50%);
+  }
+  .cursor-ring.hovered { width: 56px; height: 56px; border-color: var(--accent); }
 
-/* SERVICES */
-.services {
-  padding:120px 20px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
 
-.services-header {
-  text-align:center;
-  margin-bottom:60px;
-}
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(20px);
+    background: rgba(6,8,16,0.7);
+    border-bottom: 1px solid var(--border);
+    transition: padding 0.3s;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex; gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: transparent;
+    border: 1px solid rgba(0,212,255,0.4);
+    color: var(--accent);
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: none;
+    transition: background 0.2s, border-color 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .nav-cta:hover { background: rgba(0,212,255,0.08); border-color: var(--accent); }
 
-.card-stack-wrapper {
-  position:relative;
-  width:340px;
-  height:480px;
-}
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 60px 80px;
+  }
 
-/* CARD */
-.stack-card {
-  position:absolute;
-  width:100%;
-  height:420px;
-  border-radius:20px;
-  padding:20px;
-  background:var(--card);
-  border:1px solid rgba(255,255,255,0.08);
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  transition:all 0.5s ease;
-}
+  /* Background grid */
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
 
-/* STACK POSITIONS */
-.stack-card[data-index="0"] { transform:translateY(0) scale(1); z-index:6; }
-.stack-card[data-index="1"] { transform:translateY(30px) scale(.95); z-index:5; }
-.stack-card[data-index="2"] { transform:translateY(55px) scale(.9); z-index:4; }
-.stack-card[data-index="3"] { transform:translateY(75px) scale(.85); z-index:3; }
-.stack-card[data-index="4"] { transform:translateY(95px) scale(.8); z-index:2; opacity:.6;}
-.stack-card[data-index="5"] { transform:translateY(110px) scale(.75); opacity:.3; }
+  /* Glow orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .orb-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,212,255,0.12) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    animation: drift1 12s ease-in-out infinite alternate;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+    bottom: -50px; right: -50px;
+    animation: drift2 15s ease-in-out infinite alternate;
+  }
+  .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+    top: 50%; right: 20%;
+    animation: drift1 18s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes drift1 { from { transform: translate(0,0); } to { transform: translate(40px, 30px); } }
+  @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-30px, 20px); } }
 
-/* CARD CONTENT */
-.card-top {
-  display:flex;
-  justify-content:space-between;
-}
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    text-align: center;
+  }
 
-.card-body h3 {
-  margin:10px 0;
-}
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
-.card-features {
-  padding-left:16px;
-  font-size:13px;
-  color:var(--muted);
-}
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+  .hero h1 .line-1 { display: block; color: var(--text); }
+  .hero h1 .line-2 {
+    display: block;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 60%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-.card-features li {
-  margin-bottom:6px;
-}
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 44px;
+    line-height: 1.7;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
 
-.card-cta {
-  color:var(--accent);
-  text-decoration:none;
-}
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent) 0%, #0099bb 100%);
+    color: #000;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: none;
+    transition: opacity 0.2s, transform 0.2s;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 15px;
+    padding: 14px 32px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: none;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); transform: translateY(-2px); }
 
-/* OTHER SECTIONS */
-.section {
-  padding:100px 20px;
-  text-align:center;
-}
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 6px; letter-spacing: 0.3px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTIONS */
+  section { padding: 100px 60px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .section-desc {
+    font-size: 17px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 500px;
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    padding: 28px 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 64px;
+    animation: marquee 20s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .marquee-item::after { content: '◆'; color: var(--accent); font-size: 8px; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SERVICES */
+  .services { background: var(--bg); }
+  .services-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: end;
+    margin-bottom: 64px;
+  }
+
+  /* Stack scene: deck left, detail right */
+  .stack-scene {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  /* Card stack */
+  .card-stack-wrapper {
+    position: relative;
+    height: 420px;
+    perspective: 1200px;
+  }
+  .stack-card {
+    position: absolute;
+    left: 0; right: 0;
+    height: 320px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    padding: 32px;
+    cursor: none;
+    transition: transform 0.55s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease, box-shadow 0.4s ease;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .stack-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.04), transparent);
+    pointer-events: none;
+  }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; }
+  .card-icon-wrap {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+  .stack-card:hover .card-icon-wrap { transform: scale(1.08) rotate(-4deg); }
+  .card-num { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--muted); opacity: 0.5; }
+  .card-body { flex: 1; padding: 20px 0 0; }
+  .card-body h3 { font-family: var(--font-display); font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .card-body p { font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .card-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px;
+  }
+  .card-arrow {
+    width: 38px; height: 38px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 15px;
+    transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .stack-card:hover .card-arrow { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.08); transform: rotate(45deg); }
+
+  /* Deck nav */
+  .deck-nav { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+  .deck-dots { display: flex; gap: 6px; flex: 1; }
+  .deck-dot { height: 3px; border-radius: 2px; background: var(--border); transition: background 0.3s; flex: 1; }
+  .deck-dot.active { background: var(--accent); }
+  .deck-btn {
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--muted); width: 34px; height: 34px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: none; font-size: 13px;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .deck-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.06); }
+  .deck-counter { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: var(--muted); min-width: 36px; text-align: center; }
+
+  /* Detail panel */
+  .service-detail { position: sticky; top: 120px; }
+  .detail-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .detail-header {
+    padding: 32px 32px 24px;
+    border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .detail-header-bg { position: absolute; inset: 0; pointer-events: none; transition: background 0.4s; }
+  .detail-icon { font-size: 36px; margin-bottom: 14px; display: block; transition: transform 0.3s; }
+  .detail-panel:hover .detail-icon { transform: scale(1.1); }
+  .detail-title { font-family: var(--font-display); font-size: 24px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 6px; }
+  .detail-tagline { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.6; }
+  .detail-body { padding: 28px 32px; }
+
+  /* Mobile mockup */
+  .svc-mockup { display: none; justify-content: center; margin-bottom: 24px; }
+  .svc-mockup.visible { display: flex; }
+  .mobile-frame {
+    width: 190px; background: #0a0e1a; border-radius: 30px;
+    border: 2px solid rgba(255,255,255,0.12);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden; padding-bottom: 10px;
+  }
+  .mobile-notch { width: 76px; height: 22px; background: #060810; border-radius: 0 0 14px 14px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .notch-cam { width: 7px; height: 7px; background: #1a1f30; border-radius: 50%; }
+  .notch-speaker { width: 26px; height: 3px; background: #1a1f30; border-radius: 2px; }
+  .mobile-screen { padding: 0 9px; }
+  .mobile-status { display: flex; justify-content: space-between; padding: 0 3px 7px; font-size: 8px; color: var(--muted); font-weight: 500; }
+  .mobile-app-header { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 9px; padding: 11px; margin-bottom: 7px; }
+  .mobile-app-title { font-family: var(--font-display); font-size: 10px; font-weight: 800; color: white; margin-bottom: 1px; }
+  .mobile-app-sub { font-size: 7px; color: rgba(255,255,255,0.6); }
+  .mobile-cards { display: flex; flex-direction: column; gap: 4px; }
+  .m-card { background: var(--card); border-radius: 7px; padding: 7px 9px; display: flex; align-items: center; gap: 7px; border: 1px solid var(--border); }
+  .m-card-icon { font-size: 13px; }
+  .m-card-label { font-size: 7.5px; font-weight: 600; color: var(--text); }
+  .m-card-sub { font-size: 6.5px; color: var(--muted); }
+  .m-card-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-left: auto; flex-shrink: 0; }
+  .mobile-nav { display: flex; justify-content: space-around; padding: 8px 3px 0; border-top: 1px solid var(--border); margin: 7px 0 0; }
+  .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 6.5px; color: var(--muted); }
+  .mobile-nav-item.active { color: var(--accent); }
+  .mobile-nav-icon { font-size: 11px; }
+
+  /* Browser mockup */
+  .browser-frame { background: #0a0e1a; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .browser-bar { display: flex; align-items: center; gap: 7px; padding: 9px 12px; background: #0d1220; border-bottom: 1px solid var(--border); }
+  .browser-dots { display: flex; gap: 4px; }
+  .browser-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .browser-url { flex: 1; background: rgba(255,255,255,0.04); border-radius: 4px; padding: 3px 9px; font-size: 8px; color: var(--muted); text-align: center; }
+  .browser-content { padding: 12px; }
+  .browser-hero { background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(124,58,237,0.1)); border-radius: 7px; padding: 13px; margin-bottom: 9px; display: flex; align-items: center; gap: 10px; }
+  .browser-hero-text h4 { font-family: var(--font-display); font-size: 9px; font-weight: 800; margin-bottom: 2px; }
+  .browser-hero-text p { font-size: 6.5px; color: var(--muted); }
+  .browser-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .b-card { background: var(--card); border-radius: 5px; padding: 7px; border: 1px solid var(--border); }
+  .b-card-icon { font-size: 11px; margin-bottom: 3px; }
+  .b-card-label { font-size: 6.5px; font-weight: 600; color: var(--text); }
+  .b-card-sub { font-size: 6px; color: var(--muted); }
+
+  /* AI chat mockup */
+  .ai-chat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .ai-chat-header { padding: 10px 14px; background: #0d1220; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .ai-chat-avatar { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--accent2), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .ai-chat-name { font-size: 11px; font-weight: 600; }
+  .ai-chat-status { font-size: 9px; color: #34d399; display: flex; align-items: center; gap: 3px; }
+  .ai-chat-status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #34d399; }
+  .ai-messages { padding: 12px; display: flex; flex-direction: column; gap: 9px; }
+  .ai-msg { max-width: 82%; }
+  .ai-msg.user { align-self: flex-end; }
+  .ai-bubble { padding: 7px 11px; border-radius: 9px; font-size: 10px; line-height: 1.5; }
+  .ai-msg.bot .ai-bubble { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.12); border-radius: 3px 9px 9px 9px; }
+  .ai-msg.user .ai-bubble { background: linear-gradient(135deg, var(--accent2), #5b21b6); color: white; border-radius: 9px 3px 9px 9px; }
+  .ai-typing { display: flex; gap: 3px; padding: 8px 11px; background: rgba(0,212,255,0.05); border-radius: 3px 9px 9px 9px; width: fit-content; }
+  .ai-typing span { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: typedot 1.2s ease infinite; }
+  .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typedot { 0%,60%,100%{transform:translateY(0);opacity:0.4;} 30%{transform:translateY(-4px);opacity:1;} }
+
+  /* Feature list */
+  .detail-features { display: flex; flex-direction: column; gap: 10px; }
+  .detail-feature {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .detail-feature:hover { border-color: rgba(0,212,255,0.15); background: rgba(0,212,255,0.03); }
+  .feature-check { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; margin-top: 1px; }
+  .feature-label { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 1px; }
+  .feature-sub { font-size: 11px; color: var(--muted); font-weight: 300; }
+  .detail-cta { margin-top: 20px; display: flex; gap: 10px; }
+  .detail-cta .btn-primary { flex: 1; text-align: center; font-size: 13px; padding: 11px 16px; }
+  .detail-cta .btn-ghost { font-size: 13px; padding: 11px 16px; }
+
+  /* Fade transition for detail panel */
+  .detail-content { opacity: 1; transition: opacity 0.22s ease, transform 0.22s ease; }
+  .detail-content.fade-out { opacity: 0; transform: translateY(6px); }
+
+  /* service-tag kept for compat */
+  .service-tag {
+    display: inline-block; margin-top: 16px;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 4px;
+    background: rgba(0,212,255,0.08); color: var(--accent);
+  }
+
+  /* PROCESS */
+  .process { background: var(--surface); }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+  .process-step {
+    position: relative;
+  }
+  .process-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: calc(100% + 16px);
+    width: calc(100% - 56px);
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0.3;
+  }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .step-icon {
+    width: 40px; height: 40px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  .process-step h4 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .process-step p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* TECH STACK */
+  .tech { background: var(--bg); }
+  .tech-inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .tech-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 48px;
+  }
+  .tech-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .tech-pill:hover {
+    border-color: rgba(0,212,255,0.3);
+    background: rgba(0,212,255,0.05);
+    transform: translateY(-2px);
+  }
+  .tech-pill-icon { font-size: 16px; }
+
+  /* WHY US */
+  .why { background: var(--surface); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 64px;
+  }
+  .why-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .why-card:hover { border-color: rgba(0,212,255,0.2); transform: translateY(-4px); }
+  .why-card .icon { font-size: 28px; margin-bottom: 16px; }
+  .why-card h4 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .why-card p { font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--bg);
+    padding: 100px 60px;
+  }
+  .cta-box {
+    background: linear-gradient(135deg, rgba(0,212,255,0.06) 0%, rgba(124,58,237,0.06) 100%);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 24px;
+    padding: 80px 60px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 20%; right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+  }
+  .cta-box h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+  }
+  .cta-box p {
+    font-size: 17px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+  .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 60px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+  }
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 14px;
+    line-height: 1.7;
+    max-width: 280px;
+  }
+  .footer-col h5 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 300;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--accent); }
+  .footer-bottom {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p { font-size: 13px; color: var(--muted); font-weight: 300; }
+  .social-links { display: flex; gap: 16px; }
+  .social-links a {
+    width: 34px; height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    font-size: 14px;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .social-links a:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 70px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .services-header, .tech-inner { grid-template-columns: 1fr; }
+    .stack-scene { grid-template-columns: 1fr; gap: 40px; }
+    .card-stack-wrapper { height: 370px; }
+    .stack-card { height: 290px; }
+    .service-detail { position: static; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr 1fr; padding: 40px 24px; }
+    .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 12px; }
+    .hero-stats { gap: 28px; }
+    .cta-box { padding: 48px 28px; }
+    .cta-section { padding: 70px 24px; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
 </style>
 </head>
-
 <body>
 
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
 <nav>
-  <div>Nova</div>
-  <div>Menu</div>
+  <a href="#" class="logo">
+    <div class="logo-mark">N</div>
+    Nova Solution
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#tech">Tech Stack</a></li>
+    <li><a href="#why">Why Us</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in Touch</button>
 </nav>
 
-<section class="hero">
-  <div>
-    <h1>We Build Digital Products</h1>
-    <p>Mobile, Web & AI Solutions</p>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Digital Innovation Studio
+    </div>
+    <h1>
+      <span class="line-1">We Build Digital</span>
+      <span class="line-2">Experiences That Scale</span>
+    </h1>
+    <p class="hero-sub">From mobile apps to AI-powered platforms — Nova Solution crafts high-performance digital products that grow your business.</p>
+    <div class="hero-ctas">
+      <a href="#services" class="btn-primary">Explore Our Work</a>
+      <a href="#contact" class="btn-ghost">Start a Project →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">50<span>+</span></div>
+        <div class="stat-label">Projects Delivered</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">98<span>%</span></div>
+        <div class="stat-label">Client Satisfaction</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">6<span>+</span></div>
+        <div class="stat-label">Core Specialisms</div>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">Mobile Development</span>
+    <span class="marquee-item">Web Development</span>
+    <span class="marquee-item">Bubble.io</span>
+    <span class="marquee-item">GoHighLevel</span>
+    <span class="marquee-item">AI Integration</span>
+    <span class="marquee-item">Software Consulting</span>
+    <span class="marquee-item">Mobile Development</span>
+    <span class="marquee-item">Web Development</span>
+    <span class="marquee-item">Bubble.io</span>
+    <span class="marquee-item">GoHighLevel</span>
+    <span class="marquee-item">AI Integration</span>
+    <span class="marquee-item">Software Consulting</span>
+  </div>
+</div>
 
 <!-- SERVICES -->
 <section class="services" id="services">
-  <div class="services-header">
-    <h2>Our Services</h2>
-    <p>Scroll to explore</p>
+  <div class="services-header reveal">
+    <div>
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">End-to-end digital solutions</h2>
+    </div>
+    <p class="section-desc">We combine deep technical expertise with strategic thinking to deliver software that makes a measurable impact.</p>
   </div>
 
-  <div class="card-stack-wrapper" id="cardStack">
+  <div class="stack-scene reveal">
 
-    <div class="stack-card" data-service="0">
-      <div class="card-top">📱 <span>01</span></div>
-      <div class="card-body">
-        <h3>Mobile Development</h3>
-        <p>iOS & Android apps</p>
-        <ul class="card-features">
-          <li>React Native</li>
-          <li>Swift/Kotlin</li>
-          <li>Offline support</li>
-        </ul>
+    <!-- LEFT: stacked cards -->
+    <div>
+      <div class="card-stack-wrapper" id="cardStack">
+
+        <div class="stack-card" data-service="0">
+          <div class="card-top">
+            <div class="card-icon-wrap" style="background:rgba(0,212,255,0.1);">📱</div>
+            <span class="card-num">01 / 06</span>
+          </div>
+          <div class="card-body">
+            <h3>Mobile Development</h3>
+            <p>Native & cross-platform apps for iOS and Android. Smooth UX, robust architecture, and App Store-ready delivery.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-tag" style="background:rgba(0,212,255,0.08);color:var(--accent);">iOS · Android · React Native</span>
+            <div class="card-arrow">+</div>
+          </div>
+        </div>
+
+        <div class="stack-card" data-service="1">
+          <div class="card-top">
+            <div class="card-icon-wrap" style="background:rgba(124,58,237,0.1);">🌐</div>
+            <span class="card-num">02 / 06</span>
+          </div>
+          <div class="card-body">
+            <h3>Web Development</h3>
+            <p>Fast, scalable web platforms built with modern frameworks. From landing pages to complex SaaS dashboards.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-tag" style="background:rgba(124,58,237,0.1);color:#a78bfa;">React · Next.js · Node</span>
+            <div class="card-arrow">+</div>
+          </div>
+        </div>
+
+        <div class="stack-card" data-service="2">
+          <div class="card-top">
+            <div class="card-icon-wrap" style="background:rgba(245,158,11,0.1);">⚡</div>
+            <span class="card-num">03 / 06</span>
+          </div>
+          <div class="card-body">
+            <h3>Bubble.io Development</h3>
+            <p>Expert no-code MVPs and full products on Bubble.io. Launch faster without sacrificing quality or scalability.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-tag" style="background:rgba(245,158,11,0.1);color:#fbbf24;">No-Code · MVP · SaaS</span>
+            <div class="card-arrow">+</div>
+          </div>
+        </div>
+
+        <div class="stack-card" data-service="3">
+          <div class="card-top">
+            <div class="card-icon-wrap" style="background:rgba(16,185,129,0.1);">📈</div>
+            <span class="card-num">04 / 06</span>
+          </div>
+          <div class="card-body">
+            <h3>GoHighLevel</h3>
+            <p>Custom GHL setups, automation funnels, CRM configurations, and white-label agency deployments.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-tag" style="background:rgba(16,185,129,0.1);color:#34d399;">CRM · Funnels · Automation</span>
+            <div class="card-arrow">+</div>
+          </div>
+        </div>
+
+        <div class="stack-card" data-service="4">
+          <div class="card-top">
+            <div class="card-icon-wrap" style="background:rgba(239,68,68,0.1);">🤖</div>
+            <span class="card-num">05 / 06</span>
+          </div>
+          <div class="card-body">
+            <h3>AI Integration</h3>
+            <p>Embed GPT-4, Claude, and custom ML models into your products. Chatbots, data pipelines, and intelligent features.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-tag" style="background:rgba(239,68,68,0.1);color:#f87171;">GPT · Claude · Automation</span>
+            <div class="card-arrow">+</div>
+          </div>
+        </div>
+
+        <div class="stack-card" data-service="5">
+          <div class="card-top">
+            <div class="card-icon-wrap" style="background:rgba(168,85,247,0.1);">🔧</div>
+            <span class="card-num">06 / 06</span>
+          </div>
+          <div class="card-body">
+            <h3>Software Consulting</h3>
+            <p>Architecture reviews, tech stack strategy, team augmentation, and ongoing technical advisory for growing companies.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-tag" style="background:rgba(168,85,247,0.1);color:#c084fc;">Strategy · Architecture</span>
+            <div class="card-arrow">+</div>
+          </div>
+        </div>
+
       </div>
-      <a href="#" class="card-cta">Start Project →</a>
+
+      <div class="deck-nav">
+        <button class="deck-btn" id="prevBtn">←</button>
+        <div class="deck-dots" id="deckDots">
+          <div class="deck-dot active"></div>
+          <div class="deck-dot"></div>
+          <div class="deck-dot"></div>
+          <div class="deck-dot"></div>
+          <div class="deck-dot"></div>
+          <div class="deck-dot"></div>
+        </div>
+        <div class="deck-counter" id="deckCounter">1 / 6</div>
+        <button class="deck-btn" id="nextBtn">→</button>
+      </div>
     </div>
 
-    <div class="stack-card" data-service="1">
-      <div class="card-top">🌐 <span>02</span></div>
-      <div class="card-body">
-        <h3>Web Development</h3>
-        <p>Modern scalable apps</p>
-        <ul class="card-features">
-          <li>React / Next.js</li>
-          <li>SaaS dashboards</li>
-          <li>SEO optimized</li>
-        </ul>
-      </div>
-      <a href="#" class="card-cta">Start Project →</a>
-    </div>
+    <!-- RIGHT: detail panel -->
+    <div class="service-detail">
+      <div class="detail-panel">
+        <div class="detail-header">
+          <div class="detail-header-bg" id="detailBg"></div>
+          <div class="detail-content" id="detailHeader">
+            <span class="detail-icon" id="detailIcon">📱</span>
+            <div class="detail-title" id="detailTitle">Mobile Development</div>
+            <div class="detail-tagline" id="detailTagline">Native & cross-platform apps built for performance and scale.</div>
+          </div>
+        </div>
+        <div class="detail-body">
+          <div class="detail-content" id="detailBody">
 
-    <div class="stack-card" data-service="2">
-      <div class="card-top">⚡ <span>03</span></div>
-      <div class="card-body">
-        <h3>Bubble.io</h3>
-        <p>No-code MVPs</p>
-        <ul class="card-features">
-          <li>Fast launch</li>
-          <li>Custom APIs</li>
-          <li>Scalable DB</li>
-        </ul>
-      </div>
-      <a href="#" class="card-cta">Start Project →</a>
-    </div>
+            <!-- Mobile mockup -->
+            <div class="svc-mockup visible" id="mockupMobile">
+              <div class="mobile-frame">
+                <div class="mobile-notch"><div class="notch-cam"></div><div class="notch-speaker"></div></div>
+                <div class="mobile-screen">
+                  <div class="mobile-status"><span>9:41</span><span>●●● ■</span></div>
+                  <div class="mobile-app-header">
+                    <div class="mobile-app-title">Nova App</div>
+                    <div class="mobile-app-sub">Dashboard · Good morning 👋</div>
+                  </div>
+                  <div class="mobile-cards">
+                    <div class="m-card"><span class="m-card-icon">📊</span><div><div class="m-card-label">Analytics</div><div class="m-card-sub">+24% this week</div></div><div class="m-card-dot"></div></div>
+                    <div class="m-card"><span class="m-card-icon">🛒</span><div><div class="m-card-label">Orders</div><div class="m-card-sub">12 pending</div></div><div class="m-card-dot" style="background:#f59e0b;"></div></div>
+                    <div class="m-card"><span class="m-card-icon">💬</span><div><div class="m-card-label">Messages</div><div class="m-card-sub">3 unread</div></div><div class="m-card-dot" style="background:#7c3aed;"></div></div>
+                  </div>
+                  <div class="mobile-nav">
+                    <div class="mobile-nav-item active"><div class="mobile-nav-icon">🏠</div>Home</div>
+                    <div class="mobile-nav-item"><div class="mobile-nav-icon">🔍</div>Search</div>
+                    <div class="mobile-nav-item"><div class="mobile-nav-icon">💼</div>Work</div>
+                    <div class="mobile-nav-item"><div class="mobile-nav-icon">👤</div>Profile</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <div class="stack-card" data-service="3">
-      <div class="card-top">📈 <span>04</span></div>
-      <div class="card-body">
-        <h3>GoHighLevel</h3>
-        <p>CRM automation</p>
-        <ul class="card-features">
-          <li>Funnels</li>
-          <li>Email/SMS</li>
-          <li>Automation</li>
-        </ul>
-      </div>
-      <a href="#" class="card-cta">Start Project →</a>
-    </div>
+            <!-- Browser mockup -->
+            <div class="svc-mockup" id="mockupBrowser">
+              <div style="width:100%;">
+                <div class="browser-frame">
+                  <div class="browser-bar">
+                    <div class="browser-dots"><div class="browser-dot" style="background:#ff5f57;"></div><div class="browser-dot" style="background:#febc2e;"></div><div class="browser-dot" style="background:#28c840;"></div></div>
+                    <div class="browser-url">novasolution.io/dashboard</div>
+                  </div>
+                  <div class="browser-content">
+                    <div class="browser-hero"><span style="font-size:22px;">🚀</span><div class="browser-hero-text"><h4>SaaS Dashboard</h4><p>Real-time analytics · React · Next.js</p></div></div>
+                    <div class="browser-grid">
+                      <div class="b-card"><div class="b-card-icon">📈</div><div class="b-card-label">Revenue</div><div class="b-card-sub">$48,290 MRR</div></div>
+                      <div class="b-card"><div class="b-card-icon">👥</div><div class="b-card-label">Users</div><div class="b-card-sub">12,847 active</div></div>
+                      <div class="b-card"><div class="b-card-icon">⚡</div><div class="b-card-label">Uptime</div><div class="b-card-sub">99.99% SLA</div></div>
+                      <div class="b-card"><div class="b-card-icon">🔒</div><div class="b-card-label">Security</div><div class="b-card-sub">SOC2 ready</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <div class="stack-card" data-service="4">
-      <div class="card-top">🤖 <span>05</span></div>
-      <div class="card-body">
-        <h3>AI Integration</h3>
-        <p>Smart automation</p>
-        <ul class="card-features">
-          <li>Chatbots</li>
-          <li>Data pipelines</li>
-          <li>GPT integration</li>
-        </ul>
-      </div>
-      <a href="#" class="card-cta">Start Project →</a>
-    </div>
+            <!-- AI chat mockup -->
+            <div class="svc-mockup" id="mockupAI">
+              <div style="width:100%;">
+                <div class="ai-chat">
+                  <div class="ai-chat-header">
+                    <div class="ai-chat-avatar">🤖</div>
+                    <div><div class="ai-chat-name">Nova AI Assistant</div><div class="ai-chat-status">Online</div></div>
+                  </div>
+                  <div class="ai-messages">
+                    <div class="ai-msg user"><div class="ai-bubble">Summarize my Q3 sales report</div></div>
+                    <div class="ai-msg bot"><div class="ai-bubble">Q3 revenue hit $1.2M, up 34% vs Q2. Top performer: Enterprise tier (+62%). Churn dropped to 2.1%. 📊</div></div>
+                    <div class="ai-msg user"><div class="ai-bubble">What's the trend for next month?</div></div>
+                    <div class="ai-msg bot"><div class="ai-typing"><span></span><span></span><span></span></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <div class="stack-card" data-service="5">
-      <div class="card-top">🔧 <span>06</span></div>
-      <div class="card-body">
-        <h3>Consulting</h3>
-        <p>Scale your system</p>
-        <ul class="card-features">
-          <li>Architecture</li>
-          <li>Tech strategy</li>
-          <li>Team scaling</li>
-        </ul>
+            <div class="detail-features" id="detailFeatures">
+              <div class="detail-feature"><div class="feature-check" style="background:rgba(0,212,255,0.1);color:var(--accent);">✓</div><div><div class="feature-label">iOS & Android Native</div><div class="feature-sub">Swift, Kotlin, or React Native for maximum performance</div></div></div>
+              <div class="detail-feature"><div class="feature-check" style="background:rgba(0,212,255,0.1);color:var(--accent);">✓</div><div><div class="feature-label">App Store Submission</div><div class="feature-sub">Full deployment to App Store & Google Play included</div></div></div>
+              <div class="detail-feature"><div class="feature-check" style="background:rgba(0,212,255,0.1);color:var(--accent);">✓</div><div><div class="feature-label">Offline-First Architecture</div><div class="feature-sub">Local sync, push notifications, background processing</div></div></div>
+            </div>
+
+            <div class="detail-cta">
+              <a href="#contact" class="btn-primary" id="detailCtaBtn">Start Mobile Project</a>
+              <a href="#contact" class="btn-ghost">Learn More</a>
+            </div>
+          </div>
+        </div>
       </div>
-      <a href="#" class="card-cta">Start Project →</a>
     </div>
 
   </div>
 </section>
 
-<section class="section">
-  <h2>More Sections</h2>
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+    <div class="section-label">How We Work</div>
+    <h2 class="section-title">Our process, refined</h2>
+    <p class="section-desc" style="margin:0 auto;">A clear, structured approach that keeps projects on time, on budget, and on brief.</p>
+  </div>
+  <div class="process-grid reveal">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <div class="step-icon">💡</div>
+      <h4>Discovery</h4>
+      <p>Deep-dive into your goals, users, and constraints. We define scope, KPIs, and technical requirements.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <div class="step-icon">🎨</div>
+      <h4>Design & Plan</h4>
+      <p>Wireframes, UI design, system architecture. You approve every decision before we write a line of code.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <div class="step-icon">⚙️</div>
+      <h4>Build & Iterate</h4>
+      <p>Agile sprints with weekly demos. Continuous feedback loops ensure the product evolves with your vision.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <div class="step-icon">🚀</div>
+      <h4>Launch & Grow</h4>
+      <p>QA-tested, deployed, and supported post-launch. We stay on to monitor, optimize, and scale.</p>
+    </div>
+  </div>
 </section>
+
+<!-- TECH STACK -->
+<section class="tech" id="tech">
+  <div class="tech-inner">
+    <div class="reveal">
+      <div class="section-label">Tech Stack</div>
+      <h2 class="section-title">Built with the best tools</h2>
+      <p class="section-desc">We choose the right technology for your specific needs — not what's trendy.</p>
+    </div>
+    <div class="tech-pills reveal">
+      <div class="tech-pill"><span class="tech-pill-icon">⚛️</span> React / Next.js</div>
+      <div class="tech-pill"><span class="tech-pill-icon">📱</span> React Native</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🟢</span> Node.js</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🫧</span> Bubble.io</div>
+      <div class="tech-pill"><span class="tech-pill-icon">📊</span> GoHighLevel</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🤖</span> OpenAI / GPT-4</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🧠</span> Claude AI</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🔥</span> Firebase</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🐘</span> PostgreSQL</div>
+      <div class="tech-pill"><span class="tech-pill-icon">☁️</span> AWS / Vercel</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🐳</span> Docker</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🔗</span> REST & GraphQL</div>
+      <div class="tech-pill"><span class="tech-pill-icon">💜</span> TypeScript</div>
+      <div class="tech-pill"><span class="tech-pill-icon">🎭</span> Tailwind CSS</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto 0;">
+    <div class="section-label">Why Nova</div>
+    <h2 class="section-title">Partners, not just vendors</h2>
+    <p class="section-desc" style="margin:0 auto;">We invest in your success like it's our own.</p>
+  </div>
+  <div class="why-grid reveal">
+    <div class="why-card">
+      <div class="icon">⚡</div>
+      <h4>Fast Turnaround</h4>
+      <p>Lean team, zero bureaucracy. We move quickly without cutting corners on quality or testing.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">🎯</div>
+      <h4>Outcome-Focused</h4>
+      <p>We measure success by your results — signups, revenue, retention — not just deliverables shipped.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">🔍</div>
+      <h4>Full Transparency</h4>
+      <p>Weekly progress updates, open codebases, and honest conversations. No surprises, ever.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">🏗️</div>
+      <h4>Scalable Architecture</h4>
+      <p>We build for where you're going, not just where you are today. Future-proof from day one.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">🤝</div>
+      <h4>Long-term Partnership</h4>
+      <p>Many of our clients have worked with us for years. We become an extension of your team.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">🌍</div>
+      <h4>Global Expertise</h4>
+      <p>Remote-first team with experience delivering for clients across the US, Europe, and MENA.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <div class="cta-box reveal">
+    <h2>Ready to build something great?</h2>
+    <p>Tell us about your project and we'll get back to you within 24 hours with a tailored proposal.</p>
+    <div class="cta-buttons">
+      <a href="mailto:hello@novasolution.io" class="btn-primary">hello@novasolution.io</a>
+      <a href="#" class="btn-ghost">Schedule a Call →</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="logo" style="text-decoration:none;">
+      <div class="logo-mark">N</div>
+      Nova Solution
+    </a>
+    <p>A digital product studio specializing in mobile, web, no-code, and AI solutions for startups and scale-ups.</p>
+  </div>
+  <div class="footer-col">
+    <h5>Services</h5>
+    <ul>
+      <li><a href="#">Mobile Development</a></li>
+      <li><a href="#">Web Development</a></li>
+      <li><a href="#">Bubble.io</a></li>
+      <li><a href="#">GoHighLevel</a></li>
+      <li><a href="#">AI Integration</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h5>Company</h5>
+    <ul>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Process</a></li>
+      <li><a href="#">Case Studies</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h5>Contact</h5>
+    <ul>
+      <li><a href="#">hello@novasolution.io</a></li>
+      <li><a href="#">Schedule a Call</a></li>
+      <li><a href="#">LinkedIn</a></li>
+      <li><a href="#">Twitter / X</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 Nova Solution. All rights reserved.</p>
+  <div class="social-links">
+    <a href="#" title="LinkedIn">in</a>
+    <a href="#" title="Twitter">𝕏</a>
+    <a href="#" title="GitHub">⌥</a>
+  </div>
+</div>
 
 <script>
-const cards = document.querySelectorAll('.stack-card');
-const total = cards.length;
-
-let current = 0;
-let locked = false;
-
-function updateStack() {
-  cards.forEach(card => {
-    let s = parseInt(card.dataset.service);
-    let pos = (s - current + total) % total;
-    card.dataset.index = pos;
+  // Custom cursor (original)
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = (mx - 5) + 'px';
+    cursor.style.top = (my - 5) + 'px';
   });
-}
-
-window.addEventListener('wheel', (e) => {
-  const rect = document.getElementById('services').getBoundingClientRect();
-
-  if (rect.top > 200 || rect.bottom < 200) return;
-  if (locked) return;
-
-  locked = true;
-
-  if (e.deltaY > 0) current++;
-  else current--;
-
-  current = (current + total) % total;
-
-  updateStack();
-
-  setTimeout(() => locked = false, 500);
-});
-
-/* MOBILE */
-let startY = 0;
-
-window.addEventListener('touchstart', e => {
-  startY = e.touches[0].clientY;
-});
-
-window.addEventListener('touchend', e => {
-  let diff = startY - e.changedTouches[0].clientY;
-
-  if (Math.abs(diff) > 50) {
-    if (diff > 0) current++;
-    else current--;
-
-    current = (current + total) % total;
-    updateStack();
+  function animateRing() {
+    rx += (mx - rx) * 0.14;
+    ry += (my - ry) * 0.14;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
   }
-});
+  animateRing();
+  document.querySelectorAll('a, button, .stack-card, .why-card, .tech-pill, .detail-feature').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+  });
 
-updateStack();
+  // Scroll reveal (original)
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i * 0.05) + 's';
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Services deck ──
+  const SERVICES = [
+    {
+      icon: '📱', title: 'Mobile Development',
+      tagline: 'Native & cross-platform apps built for performance and scale.',
+      accent: 'rgba(0,212,255,0.12)', mockup: 'mobile', cta: 'Start Mobile Project',
+      features: [
+        { label: 'iOS & Android Native', sub: 'Swift, Kotlin, or React Native for maximum performance' },
+        { label: 'App Store Submission', sub: 'Full deployment to App Store & Google Play included' },
+        { label: 'Offline-First Architecture', sub: 'Local sync, push notifications, background processing' },
+      ]
+    },
+    {
+      icon: '🌐', title: 'Web Development',
+      tagline: 'Fast, scalable web platforms that drive growth and engagement.',
+      accent: 'rgba(124,58,237,0.12)', mockup: 'browser', cta: 'Start Web Project',
+      features: [
+        { label: 'Modern Frameworks', sub: 'React, Next.js, Vue — SSR, SSG, and edge rendering' },
+        { label: 'SaaS & Dashboards', sub: 'Complex data-rich apps with real-time capabilities' },
+        { label: 'SEO & Performance', sub: 'Core Web Vitals optimized, 95+ Lighthouse scores' },
+      ]
+    },
+    {
+      icon: '⚡', title: 'Bubble.io Development',
+      tagline: 'Launch your no-code MVP in weeks, not months.',
+      accent: 'rgba(245,158,11,0.12)', mockup: 'none', cta: 'Build Your MVP',
+      features: [
+        { label: 'Rapid MVP Launch', sub: 'Full product in 2–4 weeks with production-ready setup' },
+        { label: 'Custom Plugins & APIs', sub: 'Extend Bubble with any third-party integration' },
+        { label: 'Scalable Architecture', sub: 'Database design that grows with your user base' },
+      ]
+    },
+    {
+      icon: '📈', title: 'GoHighLevel',
+      tagline: 'CRM automation and funnels that convert leads into revenue.',
+      accent: 'rgba(16,185,129,0.12)', mockup: 'none', cta: 'Automate Your Sales',
+      features: [
+        { label: 'Custom GHL Snapshots', sub: 'White-label agency setups and full configuration' },
+        { label: 'Funnel & Automation', sub: 'Multi-step workflows, email/SMS sequences, pipelines' },
+        { label: 'CRM Integration', sub: 'Connect GHL to your existing tech stack seamlessly' },
+      ]
+    },
+    {
+      icon: '🤖', title: 'AI Integration',
+      tagline: 'Embed intelligence into your product with GPT-4, Claude & more.',
+      accent: 'rgba(239,68,68,0.12)', mockup: 'ai', cta: 'Add AI to Your Product',
+      features: [
+        { label: 'Chatbots & Assistants', sub: 'Custom-trained AI agents with your brand voice' },
+        { label: 'Data Pipelines', sub: 'Document processing, extraction, and summarization at scale' },
+        { label: 'LLM Fine-tuning', sub: 'Specialized models trained on your domain knowledge' },
+      ]
+    },
+    {
+      icon: '🔧', title: 'Software Consulting',
+      tagline: 'Strategic technical guidance to scale your engineering operation.',
+      accent: 'rgba(168,85,247,0.12)', mockup: 'none', cta: 'Book a Consultation',
+      features: [
+        { label: 'Architecture Review', sub: 'Identify bottlenecks and define the path to scalability' },
+        { label: 'Tech Stack Strategy', sub: 'Make the right build-vs-buy decisions for your stage' },
+        { label: 'Team Augmentation', sub: 'Embed senior engineers directly into your squad' },
+      ]
+    }
+  ];
+
+  const POSITIONS = [
+    { y: 0,   scale: 1.00, z: 6, opacity: 1,   shadow: '0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.15)', bg: 'linear-gradient(145deg,#131c2f,#0f1620)' },
+    { y: 26,  scale: 0.96, z: 5, opacity: 1,   shadow: '0 20px 60px rgba(0,0,0,0.4)', bg: 'linear-gradient(145deg,#161428,#120f20)' },
+    { y: 48,  scale: 0.92, z: 4, opacity: 1,   shadow: '0 12px 40px rgba(0,0,0,0.3)', bg: 'linear-gradient(145deg,#191320,#150f1a)' },
+    { y: 66,  scale: 0.88, z: 3, opacity: 0.8, shadow: '0 6px 20px rgba(0,0,0,0.2)', bg: 'linear-gradient(145deg,#1a1218,#150e14)' },
+    { y: 80,  scale: 0.84, z: 2, opacity: 0.5, shadow: '', bg: 'linear-gradient(145deg,#1a1116,#150d12)' },
+    { y: 92,  scale: 0.80, z: 1, opacity: 0.25,shadow: '', bg: '#181014' },
+  ];
+
+  const cards = Array.from(document.querySelectorAll('.stack-card'));
+  const dots  = Array.from(document.querySelectorAll('.deck-dot'));
+  const counter = document.getElementById('deckCounter');
+  let current = 0;
+  const N = SERVICES.length;
+
+  function applyPositions() {
+    cards.forEach(card => {
+      const si = parseInt(card.dataset.service);
+      const pos = (si - current + N) % N;
+      const cfg = POSITIONS[Math.min(pos, POSITIONS.length - 1)];
+      card.style.transition = 'transform 0.55s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease, box-shadow 0.4s ease';
+      card.style.transform  = `translateY(${cfg.y}px) scale(${cfg.scale})`;
+      card.style.zIndex     = cfg.z;
+      card.style.opacity    = cfg.opacity;
+      card.style.boxShadow  = cfg.shadow;
+      card.style.background = cfg.bg;
+    });
+  }
+
+  function updateDots() {
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    counter.textContent = `${current + 1} / ${N}`;
+  }
+
+  function updateDetail(idx) {
+    const s = SERVICES[idx];
+    const hEl = document.getElementById('detailHeader');
+    const bEl = document.getElementById('detailBody');
+    [hEl, bEl].forEach(el => el.classList.add('fade-out'));
+    setTimeout(() => {
+      document.getElementById('detailIcon').textContent  = s.icon;
+      document.getElementById('detailTitle').textContent = s.title;
+      document.getElementById('detailTagline').textContent = s.tagline;
+      document.getElementById('detailBg').style.background =
+        `radial-gradient(ellipse at 50% 0%, ${s.accent}, transparent)`;
+
+      ['mobile','browser','ai'].forEach(k => {
+        document.getElementById('mockup' + k.charAt(0).toUpperCase() + k.slice(1))
+          .classList.toggle('visible', s.mockup === k);
+      });
+
+      document.getElementById('detailFeatures').innerHTML = s.features.map(f => `
+        <div class="detail-feature">
+          <div class="feature-check" style="background:rgba(0,212,255,0.1);color:var(--accent);">✓</div>
+          <div><div class="feature-label">${f.label}</div><div class="feature-sub">${f.sub}</div></div>
+        </div>`).join('');
+
+      document.getElementById('detailCtaBtn').textContent = s.cta;
+
+      [hEl, bEl].forEach(el => el.classList.remove('fade-out'));
+    }, 220);
+  }
+
+  function goTo(idx) {
+    if (idx === current) return;
+    current = (idx + N) % N;
+    applyPositions();
+    updateDots();
+    updateDetail(current);
+  }
+
+  cards.forEach(card => card.addEventListener('click', () => goTo(parseInt(card.dataset.service))));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+  // Touch swipe
+  let tx = 0;
+  document.getElementById('cardStack').addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.getElementById('cardStack').addEventListener('touchend', e => {
+    const dx = tx - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 40) goTo(dx > 0 ? current + 1 : current - 1);
+  });
+
+  // Init
+  applyPositions();
+  updateDots();
 </script>
-
 </body>
 </html>
-
