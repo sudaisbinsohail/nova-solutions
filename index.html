@@ -140,7 +140,6 @@
     padding: 120px 60px 80px;
   }
 
-  /* Background grid */
   .hero::after {
     content: '';
     position: absolute; inset: 0;
@@ -151,7 +150,6 @@
     mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
   }
 
-  /* Glow orbs */
   .orb {
     position: absolute;
     border-radius: 50%;
@@ -358,8 +356,11 @@
   .marquee-item::after { content: '◆'; color: var(--accent); font-size: 8px; }
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-  /* SERVICES */
+  /* ============================================================
+     SERVICES — tabbed layout
+     ============================================================ */
   .services { background: var(--bg); }
+
   .services-header {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -367,67 +368,174 @@
     align-items: end;
     margin-bottom: 64px;
   }
-  .services-grid {
+
+  .services-tabbed {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
+    grid-template-columns: 230px 1fr;
     border: 1px solid var(--border);
     border-radius: 16px;
     overflow: hidden;
+    min-height: 480px;
   }
-  .service-card {
+
+  /* Sidebar */
+  .services-sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .svc-tab {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 18px 22px;
+    background: none;
+    border: none;
+    border-left: 2px solid transparent;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: left;
+    cursor: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    width: 100%;
+    letter-spacing: 0.2px;
+  }
+  .svc-tab:last-child { border-bottom: none; }
+  .svc-tab:hover { background: rgba(0,212,255,0.03); color: var(--text); }
+  .svc-tab.active {
     background: var(--card);
-    padding: 36px 32px;
-    transition: background 0.3s;
+    color: var(--text);
+    font-weight: 500;
+    border-left-color: var(--accent);
+  }
+  .svc-tab-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: transform 0.25s;
+  }
+  .svc-tab:hover .svc-tab-icon,
+  .svc-tab.active .svc-tab-icon { transform: scale(1.1) rotate(-4deg); }
+
+  /* Panels */
+  .services-panel-wrap { position: relative; }
+
+  .svc-panel { display: none; flex-direction: column; height: 100%; }
+  .svc-panel.active { display: flex; }
+
+  .svc-card-top {
+    padding: 36px 36px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--card);
     position: relative;
     overflow: hidden;
   }
-  .service-card::before {
+  .svc-card-top::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
     background: linear-gradient(90deg, var(--accent), var(--accent2));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
   }
-  .service-card:hover::before { transform: scaleX(1); }
-  .service-card:hover { background: #161d2e; }
-  .service-icon {
-    width: 48px; height: 48px;
+
+  .svc-card-icon {
+    width: 52px; height: 52px;
     border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    margin-bottom: 20px;
+    font-size: 24px;
+    margin-bottom: 18px;
     transition: transform 0.3s;
   }
-  .service-card:hover .service-icon { transform: scale(1.1) rotate(-4deg); }
-  .service-card h3 {
+  .svc-panel.active .svc-card-icon { animation: iconPop 0.35s ease both; }
+  @keyframes iconPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .svc-card-top h3 {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 700;
     margin-bottom: 10px;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.5px;
   }
-  .service-card p {
-    font-size: 14px;
+  .svc-card-top p {
+    font-size: 15px;
     color: var(--muted);
-    line-height: 1.65;
+    line-height: 1.7;
     font-weight: 300;
+    max-width: 520px;
   }
+
+  .svc-card-body {
+    padding: 28px 36px 32px;
+    background: var(--card);
+    flex: 1;
+  }
+
+  .svc-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .svc-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-weight: 400;
+    transition: border-color 0.2s;
+  }
+  .svc-feature:hover { border-color: rgba(0,212,255,0.2); }
+  .svc-check {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .svc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
   .service-tag {
     display: inline-block;
-    margin-top: 16px;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 4px;
     background: rgba(0,212,255,0.08);
     color: var(--accent);
+  }
+
+  .svc-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid rgba(0,212,255,0.25);
+    padding: 10px 22px;
+    border-radius: 6px;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .svc-cta:hover {
+    background: rgba(0,212,255,0.07);
+    border-color: var(--accent);
+    transform: translateY(-1px);
   }
 
   /* PROCESS */
@@ -438,9 +546,7 @@
     gap: 32px;
     margin-top: 64px;
   }
-  .process-step {
-    position: relative;
-  }
+  .process-step { position: relative; }
   .process-step:not(:last-child)::after {
     content: '';
     position: absolute;
@@ -651,8 +757,33 @@
     .nav-links { display: none; }
     section { padding: 70px 24px; }
     .hero { padding: 100px 24px 60px; }
-    .services-header, .tech-inner { grid-template-columns: 1fr; }
-    .services-grid { grid-template-columns: 1fr; }
+    .services-header { grid-template-columns: 1fr; }
+    .tech-inner { grid-template-columns: 1fr; }
+    .services-tabbed {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .services-sidebar {
+      flex-direction: row;
+      overflow-x: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .svc-tab {
+      border-left: none;
+      border-bottom: 2px solid transparent;
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 14px 18px;
+    }
+    .svc-tab:last-child { border-right: none; }
+    .svc-tab.active {
+      border-bottom-color: var(--accent);
+      border-left-color: transparent;
+    }
+    .svc-features { grid-template-columns: 1fr; }
+    .svc-card-top, .svc-card-body { padding: 24px 20px; }
     .process-grid { grid-template-columns: 1fr 1fr; }
     .why-grid { grid-template-columns: 1fr; }
     footer { grid-template-columns: 1fr 1fr; padding: 40px 24px; }
@@ -748,44 +879,199 @@
     </div>
     <p class="section-desc">We combine deep technical expertise with strategic thinking to deliver software that makes a measurable impact.</p>
   </div>
-  <div class="services-grid reveal">
-    <div class="service-card">
-      <div class="service-icon" style="background:rgba(0,212,255,0.1);">📱</div>
-      <h3>Mobile Development</h3>
-      <p>Native & cross-platform apps for iOS and Android. Smooth UX, robust architecture, and App Store-ready delivery.</p>
-      <span class="service-tag">iOS · Android · React Native</span>
+
+  <div class="services-tabbed reveal">
+    <!-- Sidebar tabs -->
+    <div class="services-sidebar">
+      <button class="svc-tab active" data-panel="0">
+        <span class="svc-tab-icon" style="background:rgba(0,212,255,0.1);">📱</span>
+        Mobile Development
+      </button>
+      <button class="svc-tab" data-panel="1">
+        <span class="svc-tab-icon" style="background:rgba(124,58,237,0.1);">🌐</span>
+        Web Development
+      </button>
+      <button class="svc-tab" data-panel="2">
+        <span class="svc-tab-icon" style="background:rgba(245,158,11,0.1);">⚡</span>
+        Bubble.io
+      </button>
+      <button class="svc-tab" data-panel="3">
+        <span class="svc-tab-icon" style="background:rgba(16,185,129,0.1);">📈</span>
+        GoHighLevel
+      </button>
+      <button class="svc-tab" data-panel="4">
+        <span class="svc-tab-icon" style="background:rgba(239,68,68,0.1);">🤖</span>
+        AI Integration
+      </button>
+      <button class="svc-tab" data-panel="5">
+        <span class="svc-tab-icon" style="background:rgba(168,85,247,0.1);">🔧</span>
+        Software Consulting
+      </button>
     </div>
-    <div class="service-card">
-      <div class="service-icon" style="background:rgba(124,58,237,0.1);">🌐</div>
-      <h3>Web Development</h3>
-      <p>Fast, scalable web platforms built with modern frameworks. From landing pages to complex SaaS dashboards.</p>
-      <span class="service-tag" style="background:rgba(124,58,237,0.1);color:#a78bfa;">React · Next.js · Node</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon" style="background:rgba(245,158,11,0.1);">⚡</div>
-      <h3>Bubble.io Development</h3>
-      <p>Expert no-code MVPs and full products on Bubble.io. Launch faster without sacrificing quality or scalability.</p>
-      <span class="service-tag" style="background:rgba(245,158,11,0.1);color:#fbbf24;">No-Code · MVP · SaaS</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon" style="background:rgba(16,185,129,0.1);">📈</div>
-      <h3>GoHighLevel</h3>
-      <p>Custom GHL setups, automation funnels, CRM configurations, and white-label agency deployments.</p>
-      <span class="service-tag" style="background:rgba(16,185,129,0.1);color:#34d399;">CRM · Funnels · Automation</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon" style="background:rgba(239,68,68,0.1);">🤖</div>
-      <h3>AI Integration</h3>
-      <p>Embed GPT-4, Claude, and custom ML models into your products. Chatbots, data pipelines, and intelligent features.</p>
-      <span class="service-tag" style="background:rgba(239,68,68,0.1);color:#f87171;">GPT · Claude · Automation</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon" style="background:rgba(168,85,247,0.1);">🔧</div>
-      <h3>Software Consulting</h3>
-      <p>Architecture reviews, tech stack strategy, team augmentation, and ongoing technical advisory for growing companies.</p>
-      <span class="service-tag" style="background:rgba(168,85,247,0.1);color:#c084fc;">Strategy · Architecture</span>
-    </div>
-  </div>
+
+    <!-- Panel content -->
+    <div class="services-panel-wrap">
+
+      <!-- Mobile Development -->
+      <div class="svc-panel active" id="svc-0">
+        <div class="svc-card-top">
+          <div class="svc-card-icon" style="background:rgba(0,212,255,0.1);">📱</div>
+          <h3>Mobile Development</h3>
+          <p>Native and cross-platform apps for iOS and Android. Smooth UX, robust architecture, and App Store-ready delivery from day one.</p>
+        </div>
+        <div class="svc-card-body">
+          <div class="svc-features">
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(0,212,255,0.12);color:var(--accent);">✓</span>iOS &amp; Android native apps</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(0,212,255,0.12);color:var(--accent);">✓</span>React Native cross-platform</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(0,212,255,0.12);color:var(--accent);">✓</span>App Store &amp; Play Store launch</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(0,212,255,0.12);color:var(--accent);">✓</span>Push notifications &amp; offline mode</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(0,212,255,0.12);color:var(--accent);">✓</span>Analytics &amp; crash reporting</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(0,212,255,0.12);color:var(--accent);">✓</span>Ongoing maintenance &amp; updates</div>
+          </div>
+          <div class="svc-tags">
+            <span class="service-tag">iOS</span>
+            <span class="service-tag">Android</span>
+            <span class="service-tag">React Native</span>
+            <span class="service-tag">Swift</span>
+            <span class="service-tag">Kotlin</span>
+          </div>
+          <a href="#contact" class="svc-cta">Start a mobile project →</a>
+        </div>
+      </div>
+
+      <!-- Web Development -->
+      <div class="svc-panel" id="svc-1">
+        <div class="svc-card-top">
+          <div class="svc-card-icon" style="background:rgba(124,58,237,0.1);">🌐</div>
+          <h3>Web Development</h3>
+          <p>Fast, scalable web platforms built with modern frameworks. From landing pages to complex SaaS dashboards — we build it right.</p>
+        </div>
+        <div class="svc-card-body">
+          <div class="svc-features">
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(124,58,237,0.12);color:#a78bfa;">✓</span>SaaS dashboards &amp; portals</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(124,58,237,0.12);color:#a78bfa;">✓</span>Landing pages &amp; marketing sites</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(124,58,237,0.12);color:#a78bfa;">✓</span>API &amp; backend architecture</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(124,58,237,0.12);color:#a78bfa;">✓</span>Performance optimization</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(124,58,237,0.12);color:#a78bfa;">✓</span>SEO &amp; Core Web Vitals</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(124,58,237,0.12);color:#a78bfa;">✓</span>Authentication &amp; payments</div>
+          </div>
+          <div class="svc-tags">
+            <span class="service-tag" style="background:rgba(124,58,237,0.1);color:#a78bfa;">React</span>
+            <span class="service-tag" style="background:rgba(124,58,237,0.1);color:#a78bfa;">Next.js</span>
+            <span class="service-tag" style="background:rgba(124,58,237,0.1);color:#a78bfa;">Node.js</span>
+            <span class="service-tag" style="background:rgba(124,58,237,0.1);color:#a78bfa;">TypeScript</span>
+            <span class="service-tag" style="background:rgba(124,58,237,0.1);color:#a78bfa;">PostgreSQL</span>
+          </div>
+          <a href="#contact" class="svc-cta" style="color:#a78bfa;border-color:rgba(124,58,237,0.3);">Start a web project →</a>
+        </div>
+      </div>
+
+      <!-- Bubble.io -->
+      <div class="svc-panel" id="svc-2">
+        <div class="svc-card-top">
+          <div class="svc-card-icon" style="background:rgba(245,158,11,0.1);">⚡</div>
+          <h3>Bubble.io Development</h3>
+          <p>Expert no-code MVPs and full products on Bubble.io. Launch faster without sacrificing quality or scalability.</p>
+        </div>
+        <div class="svc-card-body">
+          <div class="svc-features">
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(245,158,11,0.12);color:#fbbf24;">✓</span>Rapid MVP builds</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(245,158,11,0.12);color:#fbbf24;">✓</span>Full SaaS on Bubble</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(245,158,11,0.12);color:#fbbf24;">✓</span>Custom plugin development</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(245,158,11,0.12);color:#fbbf24;">✓</span>API &amp; third-party integrations</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(245,158,11,0.12);color:#fbbf24;">✓</span>Database design &amp; optimization</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(245,158,11,0.12);color:#fbbf24;">✓</span>Bubble migrations &amp; audits</div>
+          </div>
+          <div class="svc-tags">
+            <span class="service-tag" style="background:rgba(245,158,11,0.1);color:#fbbf24;">No-Code</span>
+            <span class="service-tag" style="background:rgba(245,158,11,0.1);color:#fbbf24;">MVP</span>
+            <span class="service-tag" style="background:rgba(245,158,11,0.1);color:#fbbf24;">SaaS</span>
+            <span class="service-tag" style="background:rgba(245,158,11,0.1);color:#fbbf24;">Bubble.io</span>
+          </div>
+          <a href="#contact" class="svc-cta" style="color:#fbbf24;border-color:rgba(245,158,11,0.3);">Start a Bubble project →</a>
+        </div>
+      </div>
+
+      <!-- GoHighLevel -->
+      <div class="svc-panel" id="svc-3">
+        <div class="svc-card-top">
+          <div class="svc-card-icon" style="background:rgba(16,185,129,0.1);">📈</div>
+          <h3>GoHighLevel</h3>
+          <p>Custom GHL setups, automation funnels, CRM configurations, and white-label agency deployments — done properly.</p>
+        </div>
+        <div class="svc-card-body">
+          <div class="svc-features">
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(16,185,129,0.12);color:#34d399;">✓</span>CRM setup &amp; configuration</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(16,185,129,0.12);color:#34d399;">✓</span>Sales funnel builds</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(16,185,129,0.12);color:#34d399;">✓</span>Workflow &amp; automation</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(16,185,129,0.12);color:#34d399;">✓</span>White-label agency setup</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(16,185,129,0.12);color:#34d399;">✓</span>Email &amp; SMS campaigns</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(16,185,129,0.12);color:#34d399;">✓</span>Reputation management</div>
+          </div>
+          <div class="svc-tags">
+            <span class="service-tag" style="background:rgba(16,185,129,0.1);color:#34d399;">CRM</span>
+            <span class="service-tag" style="background:rgba(16,185,129,0.1);color:#34d399;">Funnels</span>
+            <span class="service-tag" style="background:rgba(16,185,129,0.1);color:#34d399;">Automation</span>
+            <span class="service-tag" style="background:rgba(16,185,129,0.1);color:#34d399;">GHL</span>
+          </div>
+          <a href="#contact" class="svc-cta" style="color:#34d399;border-color:rgba(16,185,129,0.3);">Start a GHL project →</a>
+        </div>
+      </div>
+
+      <!-- AI Integration -->
+      <div class="svc-panel" id="svc-4">
+        <div class="svc-card-top">
+          <div class="svc-card-icon" style="background:rgba(239,68,68,0.1);">🤖</div>
+          <h3>AI Integration</h3>
+          <p>Embed GPT-4, Claude, and custom ML models into your products. Chatbots, data pipelines, and intelligent features built to last.</p>
+        </div>
+        <div class="svc-card-body">
+          <div class="svc-features">
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(239,68,68,0.12);color:#f87171;">✓</span>Custom AI chatbots</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(239,68,68,0.12);color:#f87171;">✓</span>GPT-4 &amp; Claude API integration</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(239,68,68,0.12);color:#f87171;">✓</span>RAG &amp; vector search</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(239,68,68,0.12);color:#f87171;">✓</span>Intelligent automation flows</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(239,68,68,0.12);color:#f87171;">✓</span>Document processing &amp; OCR</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(239,68,68,0.12);color:#f87171;">✓</span>Fine-tuning &amp; model evaluation</div>
+          </div>
+          <div class="svc-tags">
+            <span class="service-tag" style="background:rgba(239,68,68,0.1);color:#f87171;">GPT-4</span>
+            <span class="service-tag" style="background:rgba(239,68,68,0.1);color:#f87171;">Claude</span>
+            <span class="service-tag" style="background:rgba(239,68,68,0.1);color:#f87171;">LangChain</span>
+            <span class="service-tag" style="background:rgba(239,68,68,0.1);color:#f87171;">Automation</span>
+          </div>
+          <a href="#contact" class="svc-cta" style="color:#f87171;border-color:rgba(239,68,68,0.3);">Start an AI project →</a>
+        </div>
+      </div>
+
+      <!-- Software Consulting -->
+      <div class="svc-panel" id="svc-5">
+        <div class="svc-card-top">
+          <div class="svc-card-icon" style="background:rgba(168,85,247,0.1);">🔧</div>
+          <h3>Software Consulting</h3>
+          <p>Architecture reviews, tech stack strategy, team augmentation, and ongoing technical advisory for growing companies.</p>
+        </div>
+        <div class="svc-card-body">
+          <div class="svc-features">
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(168,85,247,0.12);color:#c084fc;">✓</span>Architecture reviews</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(168,85,247,0.12);color:#c084fc;">✓</span>Tech stack selection</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(168,85,247,0.12);color:#c084fc;">✓</span>Team augmentation</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(168,85,247,0.12);color:#c084fc;">✓</span>Code &amp; security audits</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(168,85,247,0.12);color:#c084fc;">✓</span>CTO-as-a-service</div>
+            <div class="svc-feature"><span class="svc-check" style="background:rgba(168,85,247,0.12);color:#c084fc;">✓</span>Roadmap &amp; sprint planning</div>
+          </div>
+          <div class="svc-tags">
+            <span class="service-tag" style="background:rgba(168,85,247,0.1);color:#c084fc;">Strategy</span>
+            <span class="service-tag" style="background:rgba(168,85,247,0.1);color:#c084fc;">Architecture</span>
+            <span class="service-tag" style="background:rgba(168,85,247,0.1);color:#c084fc;">Advisory</span>
+            <span class="service-tag" style="background:rgba(168,85,247,0.1);color:#c084fc;">CTO</span>
+          </div>
+          <a href="#contact" class="svc-cta" style="color:#c084fc;border-color:rgba(168,85,247,0.3);">Book a consultation →</a>
+        </div>
+      </div>
+
+    </div><!-- /services-panel-wrap -->
+  </div><!-- /services-tabbed -->
 </section>
 
 <!-- PROCESS -->
@@ -968,9 +1254,20 @@
     requestAnimationFrame(animateRing);
   }
   animateRing();
-  document.querySelectorAll('a, button, .service-card, .why-card, .tech-pill').forEach(el => {
+  document.querySelectorAll('a, button, .why-card, .tech-pill, .svc-feature').forEach(el => {
     el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
     el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+  });
+
+  // Services tab switching
+  document.querySelectorAll('.svc-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const i = tab.dataset.panel;
+      document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('svc-' + i).classList.add('active');
+    });
   });
 
   // Scroll reveal
